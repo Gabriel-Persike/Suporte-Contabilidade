@@ -1,0 +1,43 @@
+.has-error{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    display: inline-block;
+    border: 1px red solid !important;
+    color: black !important;
+}
+
+.strongAlert{
+    color: red;
+}
+
+.form-input-checkbox{
+    margin-right: 15px;
+    display: inline-block;
+}
+
+#divDecisao, #divDecisaoConclusao{
+    text-align: center;
+}
+
+
+.tab{ 
+    border: black 1px solid !important;
+    border-radius: 4px 4px 0 0 !important;
+}
+
+.fluig-style-guide .nav-tabs.nav-justified>li.in>a {
+    background-color: #58595b;
+    color: #fff;
+}
+
+.tab-content{
+    border: black solid 1px; 
+    width: fit-content; 
+    min-width: 100%;
+}
+
+textarea{
+    resize: vertical;
+}
