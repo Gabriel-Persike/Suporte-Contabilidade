@@ -141,7 +141,7 @@ function BuscaNomeUsuario(usuario) {
 
 function BloqueiaCamposInfoChamado() {
     if ($("#formMode").val() == "VIEW") {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
             if ($(this).attr("id") == "coligadaExclusaoLancamento") {
                 $(this).siblings("div:first").html($(this).find("option:selected").text());
             } else {
@@ -154,7 +154,7 @@ function BloqueiaCamposInfoChamado() {
         $(".radioInfoChamado").on("click", () => { return false });
     }
     else {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
             if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
                 $(this).siblings("div:first").text($(this).find("option:selected").text());
             }
@@ -450,6 +450,27 @@ function ValidaCampos() {
                     }
                 }
             });
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let count = 0;
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    count++;
+                }
+            });
+            if (count == 0) {
+                $(".FreteImob").addClass("has-error");
+                FLUIGC.toast({
+                    message: "Campo não preenchido!",
+                    type: "warning"
+                });
+            }
+            if (count > 1) {
+                $(".FreteImob").addClass("has-error");
+                FLUIGC.toast({
+                    message: "Favor Selecionar somente uma opção de frete!",
+                    type: "warning"
+                });
+            }
         }
     }
     else if (atividade == 5) {

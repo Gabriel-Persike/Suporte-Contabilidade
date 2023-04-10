@@ -1,594 +1,2115 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/style-guide/css/fluig-style-guide.min.css"
+    />
+    <script src="/resources/js/jquery/jquery.js"></script>
+    <script src="/resources/js/jquery/jquery-ui.min.js"></script>
+    <script src="/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="Functions.js"></script>
+    <script src="Script.js"></script>
+    <link rel="stylesheet" href="Style.css" />
+    <script src="/webdesk/vcXMLRPC.js"></script>
+    <script src="jquery.maskMoney.js"></script>
+  </head>
+  <!DOCTYPE html>
+  <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="/style-guide/css/fluig-style-guide.min.css" />
-        <script src="/resources/js/jquery/jquery.js"></script>
-        <script src="/resources/js/jquery/jquery-ui.min.js"></script>
-        <script src="/resources/js/mustache/mustache-min.js"></script>
-        <script src="/style-guide/js/fluig-style-guide.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-        <script src="Functions.js"></script>
-        <script src="Script.js"></script>
-        <link rel="stylesheet" href="Style.css" />
-        <script src="/webdesk/vcXMLRPC.js"></script>
-        <script src="jquery.maskMoney.js"></script>
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="/style-guide/css/fluig-style-guide.min.css"
+      />
+      <script src="/resources/js/jquery/jquery.js"></script>
+      <script src="/resources/js/jquery/jquery-ui.min.js"></script>
+      <script src="/resources/js/mustache/mustache-min.js"></script>
+      <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+      <script src="Functions.js"></script>
+      <script src="Script.js"></script>
+      <link rel="stylesheet" href="Style.css" />
+      <script src="/webdesk/vcXMLRPC.js"></script>
+      <script src="jquery.maskMoney.js"></script>
     </head>
 
     <body class="fluig-style-guide">
-        <form name="form" role="form">
-            <div id="divCollapse">
-                <ul id="coltabs" class="nav nav-tabs nav-justified nav-pills" role="tablist" style="padding-bottom: 0px; width: 100%">
-                    <li class="collapse-tab active">
-                        <a href="#tabInfoChamado" role="tab" id="atabInfoChamado" data-toggle="tab" aria-expanded="true" class="tab">Informações do Chamado</a>
-                    </li>
-                    <li class="collapse-tab">
-                        <a href="#tabHistorico" role="tab" id="atabHistorico" data-toggle="tab" aria-expanded="true" class="tab">Histórico</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tabInfoChamado">
-                    <!--<div style="border: red 1px solid; width: 100%; text-align: center; color: red;" id="divComunicado">
+      <form name="form" role="form">
+        <div id="divCollapse">
+          <ul
+            id="coltabs"
+            class="nav nav-tabs nav-justified nav-pills"
+            role="tablist"
+            style="padding-bottom: 0px; width: 100%"
+          >
+            <li class="collapse-tab active">
+              <a
+                href="#tabInfoChamado"
+                role="tab"
+                id="atabInfoChamado"
+                data-toggle="tab"
+                aria-expanded="true"
+                class="tab"
+                >Informações do Chamado</a
+              >
+            </li>
+            <li class="collapse-tab">
+              <a
+                href="#tabHistorico"
+                role="tab"
+                id="atabHistorico"
+                data-toggle="tab"
+                aria-expanded="true"
+                class="tab"
+                >Histórico</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tabInfoChamado">
+              <!--<div style="border: red 1px solid; width: 100%; text-align: center; color: red;" id="divComunicado">
+                        </div>
+                        <br>-->
+              <div class="form-input">
+                <label>Data da Ocorrência:</label>
+                <strong class="strongAlert">*</strong>
+                <input
+                  type="text"
+                  id="data_ocorrencia"
+                  name="data_ocorrencia"
+                  class="form-control inputInfoChamado"
+                />
+                <div></div>
+                <br />
+              </div>
+              <div class="form-input">
+                <label>Categoria:</label>
+                <strong class="strongAlert">*</strong>
+                <select
+                  name="categoria"
+                  id="categoria"
+                  class="form-control inputInfoChamado"
+                >
+                  <option value=""></option>
+                  <option value="Exclusão de Lançamento">
+                    Exclusão de Lançamento
+                  </option>
+                  <option value="Entrada de Equipamentos">
+                    Entrada de Equipamentos (Terceiros)
+                  </option>
+                  <option value="Devolução de Equipamentos">
+                    Devolução de Equipamentos (Terceiros)
+                  </option>
+                  <option value="Devolução de Compras">
+                    Devolução de Compras (Terceiros)
+                  </option>
+                  <option value="Transferencia de Imobilizado">
+                    Transferência de Imobilizado
+                  </option>
+                </select>
+                <div></div>
+                <br />
+              </div>
+
+              <div id="divCamposExclusaoLancamento">
+                <div id="divInfoExclusaoLancamento">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Movimento para Exclusão</h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="form-input">
+                        <label>Coligada do Lançamento:</label>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          name="coligadaExclusaoLancamento"
+                          id="coligadaExclusaoLancamento"
+                          class="form-control inputExclusaoLancamento"
+                        >
+                          <option value=""></option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="form-input">
+                        <label>Identificador do Movimento:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          id="movimentoExclusaoLancamento"
+                          name="movimentoExclusaoLancamento"
+                          class="form-control inputExclusaoLancamento"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Coligada:</b>
+                          <span id="spanColigadaExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Movimento:</b>
+                          <span id="spanMovimentoExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Filial:</b>
+                          <span id="spanFilialExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Fornecedor:</b>
+                          <span id="spanFornecedorExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>CPF/CNPJ:</b>
+                          <span id="spanCGCCFOExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Tipo de Movimento:</b>
+                          <span id="spanCODTMVExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Valor:</b>
+                          <span id="spanValorExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Data de Emissão:</b>
+                          <span id="spanDataEmissaoExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Nº do Movimento:</b>
+                          <span id="spanNumMovimentoExclusaoMovimento"></span>
+                          <br />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div>
+                            <label for="checkboxCancelarMovOrigem"
+                              >Cancelar Movimento de Origem (OC/OS):</label
+                            >
+                            <div class="switch switch-success">
+                              <input
+                                class="switch-input"
+                                type="checkbox"
+                                name="checkboxCancelarMovOrigem"
+                                id="checkboxCancelarMovOrigem"
+                              />
+                              <label
+                                class="switch-button"
+                                for="checkboxCancelarMovOrigem"
+                                >Sim</label
+                              >
+                            </div>
+                            <div id="divInfoExclusaoLancamentoOrigem"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="divCamposEntradaDeEquipamento">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                      Entrada de Equipamentos (Terceiros)
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-input">
+                      <label
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Deixar em branco caso não tenha Contrato"
+                        >Nº do Contrato:</label
+                      >
+                      <input
+                        name="NContratoEntradaDeEquipamentos"
+                        id="NContratoEntradaDeEquipamentos"
+                        class="form-control inputEntradaDeEquipamentos"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div id="divContratoEntradaDeEquipamentos"></div>
+                    <div class="form-input">
+                      <label>Equipamentos:</label>
+                      <strong class="strongAlert">*</strong>
+                      <textarea
+                        name="EqpEntradaDeEquipamentos"
+                        id="EqpEntradaDeEquipamentos"
+                        class="form-control inputEntradaDeEquipamentos"
+                        rows="4"
+                      ></textarea>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Centro de Custo:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="CCustoEntradaDeEquipamentos"
+                        id="CCustoEntradaDeEquipamentos"
+                        class="form-control inputEntradaDeEquipamentos"
+                      ></select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Departamento:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="DeptoEntradaDeEquipamentos"
+                        id="DeptoEntradaDeEquipamentos"
+                        class="form-control inputEntradaDeEquipamentos"
+                      >
+                        <option value=""></option>
+                        <option value="1.3.01 - Administração Obra">
+                          1.3.01 - Administração Obra
+                        </option>
+                        <option value="1.3.02 - Manutenção Obra">
+                          1.3.02 - Manutenção Obra
+                        </option>
+                        <option value="1.3.03 - Produção Obra">
+                          1.3.03 - Produção Obra
+                        </option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="row">
+                      <div
+                        class="col-md-4 divAnexo"
+                        id="divAnexoNFEntradaDeEquipamentos"
+                      >
+                        <label for="inputFileNFRemessa">
+                          Nota Fiscal de Remessa:
+                          <br />
+                          <div style="display: flex; align-items: baseline">
+                            <input
+                              type="file"
+                              name="inputFileNFRemessa"
+                              id="inputFileNFRemessa"
+                              class="form-control"
+                              style="display: none"
+                              multiple
+                            />
+                            <button
+                              class="btn btn-primary"
+                              onclick="$('#inputFileNFRemessa').click();"
+                              style="margin-right: 5px"
+                            >
+                              Escolher arquivo
+                            </button>
+                            <div
+                              style="
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                              "
+                            >
+                              Nenhum arquivo selecionado
+                            </div>
+                          </div>
+                        </label>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="divCamposDevolucaoDeEquipamento">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                      Devolução de Equipamentos (Terceiros)
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-input">
+                      <label>Obra:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="ObraDevolucaoDeEquipamentos"
+                        id="ObraDevolucaoDeEquipamentos"
+                        class="form-control inputDevolucaoDeEquipamentos"
+                      >
+                        <option value=""></option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Devolução:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="selectEqpDevolucaoDeEqp"
+                        id="selectEqpDevolucaoDeEqp"
+                        class="form-control inputDevolucaoDeEqp"
+                      >
+                        <option value=""></option>
+                        <option value="Total">Total</option>
+                        <option value="Parcial">Parcial</option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Equipamentos:</label>
+                      <strong class="strongAlert">*</strong>
+                      <textarea
+                        name="descEqpDevolucaoDeEqp"
+                        id="descEqpDevolucaoDeEqp"
+                        rows="4"
+                        class="form-control inputDevolucaoDeEqp"
+                      ></textarea>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Data da Entrada:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="dataEntradaDevolucaoDeEqp"
+                        name="dataEntradaDevolucaoDeEqp"
+                        class="form-control inputDevolucaoDeEqp"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Data da Retirada:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="dataRetiradaDevolucaoDeEqp"
+                        name="dataRetiradaDevolucaoDeEqp"
+                        class="form-control inputDevolucaoDeEqp"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-input">
+                          <label>Frete por conta:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectTransporteDevolucaoDeEqp"
+                            id="selectTransporteDevolucaoDeEqp"
+                            class="form-control inputDevolucaoDeEqp"
+                          >
+                            <option value=""></option>
+                            <option value="CIF">CIF</option>
+                            <option value="FOB">FOB</option>
+                            <option value="Terceiro">Terceiro</option>
+                          </select>
+                          <div></div>
+                          <br />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-input">
+                          <label>Responsável pelo Frete:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectFreteDevolucaoDeEqp"
+                            id="selectFreteDevolucaoDeEqp"
+                            class="form-control inputDevolucaoDeEqp"
+                          >
+                            <option value=""></option>
+                            <option value="Sem Frete">Sem Frete</option>
+                            <option value="Próprio Remetente">
+                              Próprio Remetente
+                            </option>
+                            <option value="Próprio Destinatário">
+                              Próprio Destinatário
+                            </option>
+                            <option value="Terceiro">Terceiro</option>
+                          </select>
+                          <div></div>
+                          <br />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-input"
+                      id="divTransportadoraDevolucaoDeEqp"
+                    >
+                      <label>Transportadora:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        list="datalistTransport"
+                        id="CNPJTranspDevolucaoDeEqp"
+                        name="CNPJTranspDevolucaoDeEqp"
+                        class="form-control inputDevolucaoDeEqp"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div id="divPlacaTranspDevolucaoDeEqp">
+                      <div class="form-input">
+                        <label>Placa:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          name="inputPlacaDevolucaoDeEqp"
+                          id="inputPlacaDevolucaoDeEqp"
+                          class="form-control inputDevolucaoDeEqp"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div
+                        class="col-md-4 divAnexo"
+                        id="divAnexoNFDevolucaoDeEqp"
+                      >
+                        <label for="inputFileNFOrigem">
+                          Nota Fiscal de Origem:
+                          <br />
+                          <div style="display: flex; align-items: baseline">
+                            <input
+                              type="file"
+                              name="inputFileNFOrigem"
+                              id="inputFileNFOrigem"
+                              class="form-control"
+                              style="display: none"
+                              multiple
+                            />
+                            <button
+                              class="btn btn-primary"
+                              onclick="$('#inputFileNFOrigem').click();"
+                              style="margin-right: 5px"
+                            >
+                              Escolher arquivo
+                            </button>
+                            <div
+                              style="
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                              "
+                            >
+                              Nenhum arquivo selecionado
+                            </div>
+                          </div>
+                        </label>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="divCamposDevolucaoDeCompras">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                      Devolução de Compras (Materiais/Peças)
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-input">
+                      <label>Motivo da devolução:</label>
+                      <strong class="strongAlert">*</strong>
+                      <textarea
+                        name="MotivoDevolucaoDeCompra"
+                        id="MotivoDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                        rows="4"
+                      ></textarea>
+                      <div style="white-space: pre-wrap"></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Obra:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="ObraDevolucaoDeCompra"
+                        id="ObraDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      >
+                        <option value=""></option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Coligada:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="coligadaDevolucaoDeCompra"
+                        id="coligadaDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      >
+                        <option value=""></option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Identificador:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="movimentoDevolucaoDeCompra"
+                        name="movimentoDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div id="divItensDevolucaoDeCompra">
+                      <div id="divMovimentoDevolucaoDeCompra"></div>
+                      <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Itens para Devolução</h3>
+                        </div>
+                        <div class="panel-body">
+                          <table
+                            class="table table-bordered"
+                            id="tableItensDevolucaoDeCompra"
+                          >
+                            <thead>
+                              <th></th>
+                              <th>Produto</th>
+                              <th>Descrição</th>
+                              <th>Quantidade Total</th>
+                              <th>Valor Unitário</th>
+                              <th>Valor Total</th>
+                              <th>Quantidade Devolvida</th>
+                              <th>Valor Devolvido</th>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-input">
+                      <label>Data da Entrada:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="dataEntradaDevolucaoDeCompra"
+                        name="dataEntradaDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Data da Retirada:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="dataRetiradaDevolucaoDeCompra"
+                        name="dataRetiradaDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-input">
+                          <label>Frete por conta:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectTranspDevolucaoDeCompra"
+                            id="selectTranspDevolucaoDeCompra"
+                            class="form-control inputDevolucaoDeCompra"
+                          >
+                            <option value=""></option>
+                            <option value="CIF">CIF</option>
+                            <option value="FOB">FOB</option>
+                            <option value="Terceiro">Terceiro</option>
+                          </select>
+                          <div></div>
+                          <br />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-input">
+                          <label>Responsável pelo Frete:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectFreteDevolucaoDeCompra"
+                            id="selectFreteDevolucaoDeCompra"
+                            class="form-control inputDevolucaoDeCompra"
+                          >
+                            <option value=""></option>
+                            <option value="Sem Frete">Sem Frete</option>
+                            <option value="Próprio Remetente">
+                              Próprio Remetente
+                            </option>
+                            <option value="Próprio Destinatário">
+                              Próprio Destinatário
+                            </option>
+                            <option value="Terceiro">Terceiro</option>
+                          </select>
+                          <div></div>
+                          <br />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-input"
+                      id="divTransportadoraDevolucaoDeCompra"
+                    >
+                      <label>Transportadora:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        list="datalistTransport"
+                        id="CNPJTranspDevolucaoDeCompra"
+                        name="CNPJTranspDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div id="divPlacaTranspDevolucaoDeCompra">
+                      <div class="form-input">
+                        <label>Placa:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          name="inputPlacaDevolucaoDeCompra"
+                          id="inputPlacaDevolucaoDeCompra"
+                          class="form-control inputDevolucaoDeCompra"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="form-input">
+                      <label>Acordo do pagamento:</label>
+                      <strong class="strongAlert">*</strong>
+                      <textarea
+                        type="text"
+                        id="inputAcordoDevolucaoDeCompra"
+                        name="inputAcordoDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                        rows="4"
+                      ></textarea>
+                      <div style="white-space: pre-wrap"></div>
+                      <br />
+                    </div>
+
+                    <div class="row">
+                      <div
+                        class="col-md-4 divAnexo"
+                        id="divAnexoNFDevolucaoDeCompra"
+                      >
+                        <label for="inputFileNFDevCompras">
+                          Nota Fiscal:
+                          <br />
+                          <div style="display: flex; align-items: baseline">
+                            <input
+                              type="file"
+                              name="inputFileNFDevCompras"
+                              id="inputFileNFDevCompras"
+                              class="form-control"
+                              style="display: none"
+                              multiple
+                            />
+                            <button
+                              class="btn btn-primary"
+                              onclick="$('#inputFileNFDevCompras').click();"
+                              style="margin-right: 5px"
+                            >
+                              Escolher arquivo
+                            </button>
+                            <div
+                              style="
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                              "
+                            >
+                              Nenhum arquivo selecionado
+                            </div>
+                          </div>
+                        </label>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="divTransferenciaDeImobilizados">
+                <div id="divInfoExclusaoLancamento">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Transferência de Imobilizados</h3>
+                    </div>
+                    <div class="panel-body">
+                      <div class="form-input">
+                        <label>Imobilizado:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          name="Imobilizado"
+                          id="Imobilizado"
+                          class="form-control InputImobilizado"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Centro de Custo de Origem:</b>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            type="text"
+                            name="CCustoDeOrigemImobilizado"
+                            id="CCustoDeOrigemImobilizado"
+                            class="form-control InputImobilizado"
+                          >
+                            <option value=""></option>
+                          </select>
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Centro de Custo de Destino:</b>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            type="text"
+                            name="CCustoDeDestinoImobilizado"
+                            id="CCustoDeDestinoImobilizado"
+                            class="form-control InputImobilizado"
+                          >
+                            <option value=""></option>
+                          </select>
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Itens:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="ItensImobilizado"
+                            id="ItensImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Quantidade:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="QuantidadeImobilizado"
+                            id="QuantidadeImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Prefixo:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="PrefixoImobilizado"
+                            id="PrefixoImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Valor:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="ValorImobilizado"
+                            id="ValorImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <b>Responsável pelo Frete:</b>
+                          <strong class="strongAlert">*</strong>
+                          <div
+                            class="form-input form-input-checkbox"
+                            class="FreteImob"
+                          >
+                            <input
+                              type="checkbox"
+                              name="CastilhoImobilizado"
+                              id="CastilhoImobilizado"
+                              value="CastilhoImobilizado"
+                              class="FreteImob"
+                            />
+                            <label for="CastilhoImobilizado">Castilho</label>
+                            <input
+                              type="checkbox"
+                              name="TerceirosImobilizado"
+                              id="TerceirosImobilizado"
+                              value="TerceirosImobilizado"
+                              class="FreteImob"
+                            />
+                            <label for="TerceirosImobilizado">Terceiros</label>
+                            <input
+                              type="checkbox"
+                              name="SemFreteImobilizado"
+                              id="SemFreteImobilizado"
+                              value="SemFreteImobilizado"
+                              class="FreteImob"
+                            />
+                            <label for="SemFreteImobilizado">Sem Frete</label>
+                            <br />
+                            <input
+                              type="checkbox"
+                              name="TransporteRemetenteImobilizado"
+                              id="TranspFreteImoborteRemetenteImobilizado"
+                              value="TransporteRemetenteImobilizado"
+                              class="FreteImob"
+                            />
+                            <label for="TransporteRemetenteImobilizado"
+                              >Transporte pelo próprio Remetente</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <b>Quantidade de Caixas/Volume:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="QuantImobilizado"
+                            id="QuantImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                        <div class="col-md-4">
+                          <b>Peso:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="PesoImobilizado"
+                            id="PesoImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                          <br />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <b>Endereço de Origem:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="EndOrImobilizado"
+                            id="EndOrImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                        </div>
+                        <div class="col-md-6">
+                          <b>Endereço do Destino:</b>
+                          <strong class="strongAlert">*</strong>
+                          <input
+                            type="text"
+                            name="EndDesImobilizado"
+                            id="EndDesImobilizado"
+                            class="form-control InputImobilizado"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-input">
+                <label>Usuário:</label>
+                <strong class="strongAlert">*</strong>
+                <select
+                  name="usuario"
+                  id="usuario"
+                  class="form-control inputInfoChamado"
+                ></select>
+                <div></div>
+                <br />
+              </div>
+              <div class="form-input">
+                <label>Observação:</label>
+                <strong class="strongAlert">*</strong>
+                <textarea
+                  name="problema"
+                  id="problema"
+                  placeholder="Descreva o problema ocorrido"
+                  class="form-control inputInfoChamado"
+                  rows="3"
+                ></textarea>
+                <div></div>
+                <br />
+              </div>
+              <div class="form-input">
+                <label>
+                  Enviar cópia para:
+                  <i
+                    class="flaticon flaticon-info icon-sm"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Endereços de e-mail incluidos na notificação enviada por e-mail. (Separados por ;)"
+                  ></i>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                />
+                <br />
+              </div>
+            </div>
+            <div class="tab-pane" id="tabHistorico">
+              <div id="divHistorico"></div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div id="divResolucaoChamado" class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Resolução</h3>
+          </div>
+          <div class="panel-body">
+            <div id="divDecisao">
+              <div class="form-input form-input-checkbox">
+                <input
+                  type="radio"
+                  name="decisao"
+                  id="decisaoEnviar"
+                  value="Enviar"
+                  class="radioDecisao"
+                />
+                <label for="decisaoEnviar">Encerrar</label>
+              </div>
+              <div class="form-input form-input-checkbox">
+                <input
+                  type="radio"
+                  name="decisao"
+                  id="decisaoRetornar"
+                  value="Retornar"
+                  class="radioDecisao"
+                />
+                <label for="decisaoRetornar">Retornar</label>
+              </div>
+            </div>
+            <div id="divInfoResolucaoChamado">
+              <div class="form-input" id="inputEncaminhaFinan">
+                <label>
+                  Encaminhar ao Financeiro:
+                  <input
+                    type="checkbox"
+                    name="checkboxEncaminhaFinan"
+                    id="checkboxEncaminhaFinan"
+                    class="inputResolucaoChamado"
+                  />
+                </label>
+                <br /><br />
+              </div>
+              <div class="form-input">
+                <label for="tempo_gasto"> Tempo Gasto: </label>
+                <input
+                  type="text"
+                  name="tempo_gasto"
+                  id="tempo_gasto"
+                  class="form-control inputResolucaoChamado"
+                  mask="00:00:00"
+                  placeholder="hh:mm:ss"
+                  maxlength="8"
+                  style="width: 25%"
+                />
+                <br />
+              </div>
+              <div class="form-input">
+                <label for="solucao">Solução:</label>
+                <textarea
+                  name="solucao"
+                  id="solucao"
+                  class="form-control inputResolucaoChamado"
+                  rows="3"
+                  placeholder="Informe a solução encontrada"
+                ></textarea>
+                <div></div>
+              </div>
+            </div>
+            <div id="divInfoObservacao">
+              <div class="form-input">
+                <label>Prazo de retorno:</label>
+                <input
+                  type="text"
+                  id="data_prazo_retorno"
+                  name="data_prazo_retorno"
+                  class="form-control inputObservacao"
+                />
+                <div></div>
+                <br />
+              </div>
+              <div class="form-input">
+                <label>Observação:</label>
+                <textarea
+                  name="observacao"
+                  id="observacao"
+                  class="form-control inputObservacao"
+                  rows="3"
+                ></textarea>
+                <div></div>
+              </div>
+            </div>
+            <div class="row" id="divAnexoResolucao">
+              <br />
+              <div class="col-md-4">
+                <label for="inputFileAnexoResolucao">
+                  Anexos resolução:
+                  <br />
+                  <div style="display: flex; align-items: baseline">
+                    <input
+                      type="file"
+                      name="inputFileAnexoResolucao"
+                      id="inputFileAnexoResolucao"
+                      class="form-control"
+                      style="display: none"
+                      multiple
+                    />
+                    <button
+                      class="btn btn-primary"
+                      onclick="$('#inputFileAnexoResolucao').click();"
+                      style="margin-right: 5px"
+                    >
+                      Escolher arquivo
+                    </button>
+                    <div
+                      style="
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                      "
+                    >
+                      Nenhum arquivo selecionado
+                    </div>
+                  </div>
+                </label>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <datalist id="datalistTransport"> </datalist>
+
+        <div class="hidden" style="display: none">
+          <input type="hidden" id="solicitante" name="solicitante" />
+          <input type="hidden" id="atendimento" name="atendimento" />
+          <input type="hidden" id="atividade" name="atividade" />
+          <input type="hidden" id="formMode" name="formMode" />
+          <input type="hidden" id="numProces" name="numProces" />
+          <input type="hidden" id="userCode" name="userCode" />
+          <input
+            type="hidden"
+            id="jsonMovimentoExclusao"
+            name="jsonMovimentoExclusao"
+          />
+          <input
+            type="hidden"
+            id="jsonMovimentoOrigemExclusao"
+            name="jsonMovimentoOrigemExclusao"
+          />
+          <input
+            type="hidden"
+            id="jsonItensDevolucaoCompras"
+            name="jsonItensDevolucaoCompras"
+          />
+          <input type="hidden" name="idDocNFRemessa" id="idDocNFRemessa" />
+          <input type="hidden" name="idDocNFOrigem" id="idDocNFOrigem" />
+          <input
+            type="hidden"
+            name="idDocNFDevCompras"
+            id="idDocNFDevCompras"
+          />
+          <input
+            type="hidden"
+            name="idDocAnexoResolucao"
+            id="idDocAnexoResolucao"
+          />
+        </div>
+
+        <script>
+          var beforeSendValidate = function (numState, nextState) {
+            return ValidaCampos();
+          };
+        </script>
+      </form>
+    </body>
+  </html>
+
+  <body class="fluig-style-guide">
+    <form name="form" role="form">
+      <div id="divCollapse">
+        <ul
+          id="coltabs"
+          class="nav nav-tabs nav-justified nav-pills"
+          role="tablist"
+          style="padding-bottom: 0px; width: 100%"
+        >
+          <li class="collapse-tab active">
+            <a
+              href="#tabInfoChamado"
+              role="tab"
+              id="atabInfoChamado"
+              data-toggle="tab"
+              aria-expanded="true"
+              class="tab"
+              >Informações do Chamado</a
+            >
+          </li>
+          <li class="collapse-tab">
+            <a
+              href="#tabHistorico"
+              role="tab"
+              id="atabHistorico"
+              data-toggle="tab"
+              aria-expanded="true"
+              class="tab"
+              >Histórico</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tabInfoChamado">
+            <!--<div style="border: red 1px solid; width: 100%; text-align: center; color: red;" id="divComunicado">
 					</div>
 					<br>-->
-                        <div class="form-input">
-                            <label>Data da Ocorrência:</label>
-                            <strong class="strongAlert">*</strong>
-                            <input type="text" id="data_ocorrencia" name="data_ocorrencia" class="form-control inputInfoChamado" />
-                            <div></div>
-                            <br>
-                        </div>
-                        <div class="form-input">
-                            <label>Categoria:</label>
-                            <strong class="strongAlert">*</strong>
-                            <select name="categoria" id="categoria" class="form-control inputInfoChamado">
-                                <option value=""></option>
-                                <option value="Exclusão de Lançamento">Exclusão de Lançamento</option>
-                                <option value="Entrada de Equipamentos">Entrada de Equipamentos (Terceiros)</option>
-                                <option value="Devolução de Equipamentos">Devolução de Equipamentos (Terceiros)</option>
-                                <option value="Devolução de Compras">Devolução de Compras (Terceiros)</option>
-                            </select>
-                            <div></div>
-                            <br>
-                        </div>
-                        <div id="divCamposExclusaoLancamento">
-                            <div id="divInfoExclusaoLancamento">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Movimento para Exclusão</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="form-input">
-                                            <label>Coligada do Lançamento:</label>
-                                            <strong class="strongAlert">*</strong>
-                                            <select name="coligadaExclusaoLancamento" id="coligadaExclusaoLancamento" class="form-control inputExclusaoLancamento">
-                                                <option value=""></option>
-                                            </select>
-                                            <div></div>
-                                            <br>
-                                        </div>
-                                        <div class="form-input">
-                                            <label>Identificador do Movimento:</label>
-                                            <strong class="strongAlert">*</strong>
-                                            <input type="text" id="movimentoExclusaoLancamento" name="movimentoExclusaoLancamento" class="form-control inputExclusaoLancamento" />
-                                            <div></div>
-                                            <br>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <b>Coligada:</b>
-                                                <span id="spanColigadaExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>Movimento:</b>
-                                                <span id="spanMovimentoExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>Filial:</b>
-                                                <span id="spanFilialExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <b>Fornecedor:</b>
-                                                <span id="spanFornecedorExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>CPF/CNPJ:</b>
-                                                <span id="spanCGCCFOExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>Tipo de Movimento:</b>
-                                                <span id="spanCODTMVExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <b>Valor:</b>
-                                                <span id="spanValorExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>Data de Emissão:</b>
-                                                <span id="spanDataEmissaoExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <b>Nº do Movimento:</b>
-                                                <span id="spanNumMovimentoExclusaoMovimento"></span>
-                                                <br>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div>
-                                                    <label for="checkboxCancelarMovOrigem">Cancelar Movimento de Origem (OC/OS):</label>
-                                                    <div class="switch switch-success">
-                                                        <input class="switch-input" type="checkbox" name="checkboxCancelarMovOrigem" id="checkboxCancelarMovOrigem" />
-                                                        <label class="switch-button" for="checkboxCancelarMovOrigem">Sim</label>
-                                                    </div>
-                                                    <div id="divInfoExclusaoLancamentoOrigem"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="divCamposEntradaDeEquipamento">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Entrada de Equipamentos (Terceiros)</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="form-input">
-                                        <label  data-toggle="tooltip" data-placement="top" title="Deixar em branco caso não tenha Contrato">Nº do Contrato:</label>
-                                        <input name="NContratoEntradaDeEquipamentos" id="NContratoEntradaDeEquipamentos" class="form-control inputEntradaDeEquipamentos" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div id="divContratoEntradaDeEquipamentos">
-
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Equipamentos:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <textarea name="EqpEntradaDeEquipamentos" id="EqpEntradaDeEquipamentos" class="form-control inputEntradaDeEquipamentos" rows="4"></textarea>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Centro de Custo:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="CCustoEntradaDeEquipamentos" id="CCustoEntradaDeEquipamentos" class="form-control inputEntradaDeEquipamentos"></select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Departamento:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="DeptoEntradaDeEquipamentos" id="DeptoEntradaDeEquipamentos" class="form-control inputEntradaDeEquipamentos">
-                                            <option value=""></option>
-                                            <option value="1.3.01 - Administração Obra">1.3.01 - Administração Obra</option>
-                                            <option value="1.3.02 - Manutenção Obra">1.3.02 - Manutenção Obra</option>
-                                            <option value="1.3.03 - Produção Obra">1.3.03 - Produção Obra</option>
-                                        </select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4 divAnexo" id="divAnexoNFEntradaDeEquipamentos">
-                                            <label for="inputFileNFRemessa">
-                                                Nota Fiscal de Remessa:
-                                                <br>
-                                                <div style="display: flex; align-items: baseline">
-                                                    <input type="file" name="inputFileNFRemessa" id="inputFileNFRemessa" class="form-control" style="display: none" multiple />
-                                                    <button class="btn btn-primary" onclick="$('#inputFileNFRemessa').click();" style="margin-right: 5px">Escolher arquivo</button>
-                                                    <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden">Nenhum arquivo selecionado</div>
-                                                </div>
-                                            </label>
-                                            <br>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="divCamposDevolucaoDeEquipamento">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Devolução de Equipamentos (Terceiros)</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="form-input">
-                                        <label>Obra:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="ObraDevolucaoDeEquipamentos" id="ObraDevolucaoDeEquipamentos" class="form-control inputDevolucaoDeEquipamentos">
-                                            <option value=""></option>
-                                        </select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Devolução:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="selectEqpDevolucaoDeEqp" id="selectEqpDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp">
-                                            <option value=""></option>
-                                            <option value="Total">Total</option>
-                                            <option value="Parcial">Parcial</option>
-                                        </select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Equipamentos:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <textarea name="descEqpDevolucaoDeEqp" id="descEqpDevolucaoDeEqp" rows="4" class="form-control inputDevolucaoDeEqp"></textarea>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Data da Entrada:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" id="dataEntradaDevolucaoDeEqp" name="dataEntradaDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Data da Retirada:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" id="dataRetiradaDevolucaoDeEqp" name="dataRetiradaDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-input">
-                                                <label>Frete por conta:</label>
-                                                <strong class="strongAlert">*</strong>
-                                                <select name="selectTransporteDevolucaoDeEqp" id="selectTransporteDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp">
-                                                    <option value=""></option>
-                                                    <option value="CIF">CIF</option>
-                                                    <option value="FOB">FOB</option>
-                                                    <option value="Terceiro">Terceiro</option>
-                                                </select>
-                                                <div></div>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-input">
-                                                <label>Responsável pelo Frete:</label>
-                                                <strong class="strongAlert">*</strong>
-                                                <select name="selectFreteDevolucaoDeEqp" id="selectFreteDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp">
-                                                    <option value=""></option>
-                                                    <option value="Sem Frete">Sem Frete</option>
-                                                    <option value="Próprio Remetente">Próprio Remetente</option>
-                                                    <option value="Próprio Destinatário">Próprio Destinatário</option>
-                                                    <option value="Terceiro">Terceiro</option>
-                                                </select>
-                                                <div></div>
-                                                <br>
-                                            </div>        
-                                        </div>
-                                    </div>
-                                    <div class="form-input" id="divTransportadoraDevolucaoDeEqp">
-                                        <label>Transportadora:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" list="datalistTransport" id="CNPJTranspDevolucaoDeEqp" name="CNPJTranspDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div id="divPlacaTranspDevolucaoDeEqp">
-                                        <div class="form-input">
-                                            <label>Placa:</label>
-                                            <strong class="strongAlert">*</strong>
-                                            <input name="inputPlacaDevolucaoDeEqp" id="inputPlacaDevolucaoDeEqp" class="form-control inputDevolucaoDeEqp"/>
-                                            <div></div>
-                                            <br>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4 divAnexo" id="divAnexoNFDevolucaoDeEqp">
-                                            <label for="inputFileNFOrigem">
-                                                Nota Fiscal de Origem:
-                                                <br>
-                                                <div style="display: flex; align-items: baseline">
-                                                    <input type="file" name="inputFileNFOrigem" id="inputFileNFOrigem" class="form-control" style="display: none" multiple />
-                                                    <button class="btn btn-primary" onclick="$('#inputFileNFOrigem').click();" style="margin-right: 5px">Escolher arquivo</button>
-                                                    <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden">Nenhum arquivo selecionado</div>
-                                                </div>
-                                            </label>
-                                            <br>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="divCamposDevolucaoDeCompras">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Devolução de Compras (Materiais/Peças)</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="form-input">
-                                        <label>Motivo da devolução:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <textarea name="MotivoDevolucaoDeCompra" id="MotivoDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" rows="4"></textarea>
-                                        <div style="white-space: pre-wrap;"></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Obra:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="ObraDevolucaoDeCompra" id="ObraDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra">
-                                            <option value=""></option>
-                                        </select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Coligada:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <select name="coligadaDevolucaoDeCompra" id="coligadaDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra">
-                                            <option value=""></option>
-                                        </select>
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Identificador:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" id="movimentoDevolucaoDeCompra" name="movimentoDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div id="divItensDevolucaoDeCompra">
-                                        <div id="divMovimentoDevolucaoDeCompra">
-
-                                        </div>
-                                        <div class="panel panel-primary">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">Itens para Devolução</h3>
-                                            </div>
-                                            <div class="panel-body">
-                                                <table class="table table-bordered" id="tableItensDevolucaoDeCompra">
-                                                    <thead>
-                                                        <th></th>
-                                                        <th>Produto</th>
-                                                        <th>Descrição</th>
-                                                        <th>Quantidade Total</th>
-                                                        <th>Valor Unitário</th>
-                                                        <th>Valor Total</th>
-                                                        <th>Quantidade Devolvida</th>
-                                                        <th>Valor Devolvido</th>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Data da Entrada:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" id="dataEntradaDevolucaoDeCompra" name="dataEntradaDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Data da Retirada:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" id="dataRetiradaDevolucaoDeCompra" name="dataRetiradaDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-input">
-                                                <label>Frete por conta:</label>
-                                                <strong class="strongAlert">*</strong>
-                                                <select name="selectTranspDevolucaoDeCompra" id="selectTranspDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra">
-                                                    <option value=""></option>
-                                                    <option value="CIF">CIF</option>
-                                                    <option value="FOB">FOB</option>
-                                                    <option value="Terceiro">Terceiro</option>
-                                                </select>
-                                                <div></div>
-                                                <br>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-input">
-                                                <label>Responsável pelo Frete:</label>
-                                                <strong class="strongAlert">*</strong>
-                                                <select name="selectFreteDevolucaoDeCompra" id="selectFreteDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra">
-                                                    <option value=""></option>
-                                                    <option value="Sem Frete">Sem Frete</option>
-                                                    <option value="Próprio Remetente">Próprio Remetente</option>
-                                                    <option value="Próprio Destinatário">Próprio Destinatário</option>
-                                                    <option value="Terceiro">Terceiro</option>
-                                                </select>
-                                                <div></div>
-                                                <br>
-                                            </div>        
-                                        </div>
-                                    </div>
-                                    <div class="form-input" id="divTransportadoraDevolucaoDeCompra">
-                                        <label>Transportadora:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <input type="text" list="datalistTransport" id="CNPJTranspDevolucaoDeCompra" name="CNPJTranspDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" />
-                                        <div></div>
-                                        <br>
-                                    </div>
-                                    <div id="divPlacaTranspDevolucaoDeCompra">
-                                        <div class="form-input">
-                                            <label>Placa:</label>
-                                            <strong class="strongAlert">*</strong>
-                                            <input name="inputPlacaDevolucaoDeCompra" id="inputPlacaDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra"/>
-                                            <div></div>
-                                            <br>
-                                        </div>
-                                    </div>
-                                    <div class="form-input">
-                                        <label>Acordo do pagamento:</label>
-                                        <strong class="strongAlert">*</strong>
-                                        <textarea type="text" id="inputAcordoDevolucaoDeCompra" name="inputAcordoDevolucaoDeCompra" class="form-control inputDevolucaoDeCompra" rows="4"></textarea>
-                                        <div style="white-space: pre-wrap;"></div>
-                                        <br>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4 divAnexo" id="divAnexoNFDevolucaoDeCompra">
-                                            <label for="inputFileNFDevCompras">
-                                                Nota Fiscal:
-                                                <br>
-                                                <div style="display: flex; align-items: baseline">
-                                                    <input type="file" name="inputFileNFDevCompras" id="inputFileNFDevCompras" class="form-control" style="display: none" multiple />
-                                                    <button class="btn btn-primary" onclick="$('#inputFileNFDevCompras').click();" style="margin-right: 5px">Escolher arquivo</button>
-                                                    <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden">Nenhum arquivo selecionado</div>
-                                                </div>
-                                            </label>
-                                            <br>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-input">
-                            <label>Usuário:</label>
-                            <strong class="strongAlert">*</strong>
-                            <select name="usuario" id="usuario" class="form-control inputInfoChamado"></select>
-                            <div></div>
-                            <br>
-                        </div>
-                        <div class="form-input">
-                            <label>Observação:</label>
-                            <strong class="strongAlert">*</strong>
-                            <textarea name="problema" id="problema" placeholder="Descreva o problema ocorrido" class="form-control inputInfoChamado" rows="3"></textarea>
-                            <div></div>
-                            <br>
-                        </div>
-                        <div class="form-input">
-                            <label>
-                                Enviar cópia para:
-                                <i class="flaticon flaticon-info icon-sm" data-toggle="tooltip" data-placement="top" title="Endereços de e-mail incluidos na notificação enviada por e-mail. (Separados por ;)"></i>
-                            </label>
-                            <input type="text" class="form-control" name="email" id="email" />
-                            <br>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tabHistorico">
-                        <div id="divHistorico"></div>
-                    </div>
-                </div>
+            <div class="form-input">
+              <label>Data da Ocorrência:</label>
+              <strong class="strongAlert">*</strong>
+              <input
+                type="text"
+                id="data_ocorrencia"
+                name="data_ocorrencia"
+                class="form-control inputInfoChamado"
+              />
+              <div></div>
+              <br />
             </div>
-            <br>
-            <div id="divResolucaoChamado" class="panel panel-primary">
+            <div class="form-input">
+              <label>Categoria:</label>
+              <strong class="strongAlert">*</strong>
+              <select
+                name="categoria"
+                id="categoria"
+                class="form-control inputInfoChamado"
+              >
+                <option value=""></option>
+                <option value="Exclusão de Lançamento">
+                  Exclusão de Lançamento
+                </option>
+                <option value="Entrada de Equipamentos">
+                  Entrada de Equipamentos (Terceiros)
+                </option>
+                <option value="Devolução de Equipamentos">
+                  Devolução de Equipamentos (Terceiros)
+                </option>
+                <option value="Devolução de Compras">
+                  Devolução de Compras (Terceiros)
+                </option>
+              </select>
+              <div></div>
+              <br />
+            </div>
+            <div id="divCamposExclusaoLancamento">
+              <div id="divInfoExclusaoLancamento">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Movimento para Exclusão</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-input">
+                      <label>Coligada do Lançamento:</label>
+                      <strong class="strongAlert">*</strong>
+                      <select
+                        name="coligadaExclusaoLancamento"
+                        id="coligadaExclusaoLancamento"
+                        class="form-control inputExclusaoLancamento"
+                      >
+                        <option value=""></option>
+                      </select>
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="form-input">
+                      <label>Identificador do Movimento:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        id="movimentoExclusaoLancamento"
+                        name="movimentoExclusaoLancamento"
+                        class="form-control inputExclusaoLancamento"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <b>Coligada:</b>
+                        <span id="spanColigadaExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Movimento:</b>
+                        <span id="spanMovimentoExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Filial:</b>
+                        <span id="spanFilialExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <b>Fornecedor:</b>
+                        <span id="spanFornecedorExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>CPF/CNPJ:</b>
+                        <span id="spanCGCCFOExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Tipo de Movimento:</b>
+                        <span id="spanCODTMVExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <b>Valor:</b>
+                        <span id="spanValorExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Data de Emissão:</b>
+                        <span id="spanDataEmissaoExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Nº do Movimento:</b>
+                        <span id="spanNumMovimentoExclusaoMovimento"></span>
+                        <br />
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div>
+                          <label for="checkboxCancelarMovOrigem"
+                            >Cancelar Movimento de Origem (OC/OS):</label
+                          >
+                          <div class="switch switch-success">
+                            <input
+                              class="switch-input"
+                              type="checkbox"
+                              name="checkboxCancelarMovOrigem"
+                              id="checkboxCancelarMovOrigem"
+                            />
+                            <label
+                              class="switch-button"
+                              for="checkboxCancelarMovOrigem"
+                              >Sim</label
+                            >
+                          </div>
+                          <div id="divInfoExclusaoLancamentoOrigem"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="divCamposEntradaDeEquipamento">
+              <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Resolução</h3>
+                  <h3 class="panel-title">
+                    Entrada de Equipamentos (Terceiros)
+                  </h3>
                 </div>
                 <div class="panel-body">
-                    <div id="divDecisao">
-                        <div class="form-input form-input-checkbox">
-                            <input type="radio" name="decisao" id="decisaoEnviar" value="Enviar" class="radioDecisao" />
-                            <label for="decisaoEnviar">Encerrar</label>
+                  <div class="form-input">
+                    <label
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Deixar em branco caso não tenha Contrato"
+                      >Nº do Contrato:</label
+                    >
+                    <input
+                      name="NContratoEntradaDeEquipamentos"
+                      id="NContratoEntradaDeEquipamentos"
+                      class="form-control inputEntradaDeEquipamentos"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div id="divContratoEntradaDeEquipamentos"></div>
+                  <div class="form-input">
+                    <label>Equipamentos:</label>
+                    <strong class="strongAlert">*</strong>
+                    <textarea
+                      name="EqpEntradaDeEquipamentos"
+                      id="EqpEntradaDeEquipamentos"
+                      class="form-control inputEntradaDeEquipamentos"
+                      rows="4"
+                    ></textarea>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Centro de Custo:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="CCustoEntradaDeEquipamentos"
+                      id="CCustoEntradaDeEquipamentos"
+                      class="form-control inputEntradaDeEquipamentos"
+                    ></select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Departamento:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="DeptoEntradaDeEquipamentos"
+                      id="DeptoEntradaDeEquipamentos"
+                      class="form-control inputEntradaDeEquipamentos"
+                    >
+                      <option value=""></option>
+                      <option value="1.3.01 - Administração Obra">
+                        1.3.01 - Administração Obra
+                      </option>
+                      <option value="1.3.02 - Manutenção Obra">
+                        1.3.02 - Manutenção Obra
+                      </option>
+                      <option value="1.3.03 - Produção Obra">
+                        1.3.03 - Produção Obra
+                      </option>
+                    </select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-md-4 divAnexo"
+                      id="divAnexoNFEntradaDeEquipamentos"
+                    >
+                      <label for="inputFileNFRemessa">
+                        Nota Fiscal de Remessa:
+                        <br />
+                        <div style="display: flex; align-items: baseline">
+                          <input
+                            type="file"
+                            name="inputFileNFRemessa"
+                            id="inputFileNFRemessa"
+                            class="form-control"
+                            style="display: none"
+                            multiple
+                          />
+                          <button
+                            class="btn btn-primary"
+                            onclick="$('#inputFileNFRemessa').click();"
+                            style="margin-right: 5px"
+                          >
+                            Escolher arquivo
+                          </button>
+                          <div
+                            style="
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              overflow: hidden;
+                            "
+                          >
+                            Nenhum arquivo selecionado
+                          </div>
                         </div>
-                        <div class="form-input form-input-checkbox">
-                            <input type="radio" name="decisao" id="decisaoRetornar" value="Retornar" class="radioDecisao" />
-                            <label for="decisaoRetornar">Retornar</label>
-                        </div>
+                      </label>
+                      <br />
                     </div>
-                    <div id="divInfoResolucaoChamado">
-                        <div class="form-input" id="inputEncaminhaFinan">
-                            <label>
-                                Encaminhar ao Financeiro:
-                                <input type="checkbox" name="checkboxEncaminhaFinan" id="checkboxEncaminhaFinan" class="inputResolucaoChamado"/>
-                            </label>
-                            <br><br>
-                        </div>
-                        <div class="form-input">
-                            <label for="tempo_gasto">
-                                Tempo Gasto:
-                            </label>
-                            <input type="text" name="tempo_gasto" id="tempo_gasto" class="form-control inputResolucaoChamado" mask="00:00:00" placeholder="hh:mm:ss" maxlength="8" style="width: 25%" />
-                            <br>
-                        </div>
-                        <div class="form-input">
-                            <label for="solucao">Solução:</label>
-                            <textarea name="solucao" id="solucao" class="form-control inputResolucaoChamado" rows="3" placeholder="Informe a solução encontrada"></textarea>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div id="divInfoObservacao">
-                        <div class="form-input">
-                            <label>Prazo de retorno:</label>
-                            <input type="text" id="data_prazo_retorno" name="data_prazo_retorno" class="form-control inputObservacao" />
-                            <div></div>
-                            <br>
-                        </div>
-                        <div class="form-input">
-                            <label>Observação:</label>
-                            <textarea name="observacao" id="observacao" class="form-control inputObservacao" rows="3"></textarea>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div class="row" id="divAnexoResolucao">
-                        <br>
-                        <div class="col-md-4">
-                            <label for="inputFileAnexoResolucao">
-                                Anexos resolução:
-                                <br>
-                                <div style="display: flex; align-items: baseline">
-                                    <input type="file" name="inputFileAnexoResolucao" id="inputFileAnexoResolucao" class="form-control" style="display: none" multiple />
-                                    <button class="btn btn-primary" onclick="$('#inputFileAnexoResolucao').click();" style="margin-right: 5px">Escolher arquivo</button>
-                                    <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden">Nenhum arquivo selecionado</div>
-                                </div>
-                            </label>
-                            <br>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        
-            <datalist id="datalistTransport">
-            </datalist>
+            <div id="divCamposDevolucaoDeEquipamento">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Devolução de Equipamentos (Terceiros)
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <div class="form-input">
+                    <label>Obra:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="ObraDevolucaoDeEquipamentos"
+                      id="ObraDevolucaoDeEquipamentos"
+                      class="form-control inputDevolucaoDeEquipamentos"
+                    >
+                      <option value=""></option>
+                    </select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Devolução:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="selectEqpDevolucaoDeEqp"
+                      id="selectEqpDevolucaoDeEqp"
+                      class="form-control inputDevolucaoDeEqp"
+                    >
+                      <option value=""></option>
+                      <option value="Total">Total</option>
+                      <option value="Parcial">Parcial</option>
+                    </select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Equipamentos:</label>
+                    <strong class="strongAlert">*</strong>
+                    <textarea
+                      name="descEqpDevolucaoDeEqp"
+                      id="descEqpDevolucaoDeEqp"
+                      rows="4"
+                      class="form-control inputDevolucaoDeEqp"
+                    ></textarea>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Data da Entrada:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      id="dataEntradaDevolucaoDeEqp"
+                      name="dataEntradaDevolucaoDeEqp"
+                      class="form-control inputDevolucaoDeEqp"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Data da Retirada:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      id="dataRetiradaDevolucaoDeEqp"
+                      name="dataRetiradaDevolucaoDeEqp"
+                      class="form-control inputDevolucaoDeEqp"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-input">
+                        <label>Frete por conta:</label>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          name="selectTransporteDevolucaoDeEqp"
+                          id="selectTransporteDevolucaoDeEqp"
+                          class="form-control inputDevolucaoDeEqp"
+                        >
+                          <option value=""></option>
+                          <option value="CIF">CIF</option>
+                          <option value="FOB">FOB</option>
+                          <option value="Terceiro">Terceiro</option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-input">
+                        <label>Responsável pelo Frete:</label>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          name="selectFreteDevolucaoDeEqp"
+                          id="selectFreteDevolucaoDeEqp"
+                          class="form-control inputDevolucaoDeEqp"
+                        >
+                          <option value=""></option>
+                          <option value="Sem Frete">Sem Frete</option>
+                          <option value="Próprio Remetente">
+                            Próprio Remetente
+                          </option>
+                          <option value="Próprio Destinatário">
+                            Próprio Destinatário
+                          </option>
+                          <option value="Terceiro">Terceiro</option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-input" id="divTransportadoraDevolucaoDeEqp">
+                    <label>Transportadora:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      list="datalistTransport"
+                      id="CNPJTranspDevolucaoDeEqp"
+                      name="CNPJTranspDevolucaoDeEqp"
+                      class="form-control inputDevolucaoDeEqp"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div id="divPlacaTranspDevolucaoDeEqp">
+                    <div class="form-input">
+                      <label>Placa:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        name="inputPlacaDevolucaoDeEqp"
+                        id="inputPlacaDevolucaoDeEqp"
+                        class="form-control inputDevolucaoDeEqp"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-md-4 divAnexo"
+                      id="divAnexoNFDevolucaoDeEqp"
+                    >
+                      <label for="inputFileNFOrigem">
+                        Nota Fiscal de Origem:
+                        <br />
+                        <div style="display: flex; align-items: baseline">
+                          <input
+                            type="file"
+                            name="inputFileNFOrigem"
+                            id="inputFileNFOrigem"
+                            class="form-control"
+                            style="display: none"
+                            multiple
+                          />
+                          <button
+                            class="btn btn-primary"
+                            onclick="$('#inputFileNFOrigem').click();"
+                            style="margin-right: 5px"
+                          >
+                            Escolher arquivo
+                          </button>
+                          <div
+                            style="
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              overflow: hidden;
+                            "
+                          >
+                            Nenhum arquivo selecionado
+                          </div>
+                        </div>
+                      </label>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="divCamposDevolucaoDeCompras">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Devolução de Compras (Materiais/Peças)
+                  </h3>
+                </div>
+                <div class="panel-body">
+                  <div class="form-input">
+                    <label>Motivo da devolução:</label>
+                    <strong class="strongAlert">*</strong>
+                    <textarea
+                      name="MotivoDevolucaoDeCompra"
+                      id="MotivoDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                      rows="4"
+                    ></textarea>
+                    <div style="white-space: pre-wrap"></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Obra:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="ObraDevolucaoDeCompra"
+                      id="ObraDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    >
+                      <option value=""></option>
+                    </select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Coligada:</label>
+                    <strong class="strongAlert">*</strong>
+                    <select
+                      name="coligadaDevolucaoDeCompra"
+                      id="coligadaDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    >
+                      <option value=""></option>
+                    </select>
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Identificador:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      id="movimentoDevolucaoDeCompra"
+                      name="movimentoDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div id="divItensDevolucaoDeCompra">
+                    <div id="divMovimentoDevolucaoDeCompra"></div>
+                    <div class="panel panel-primary">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Itens para Devolução</h3>
+                      </div>
+                      <div class="panel-body">
+                        <table
+                          class="table table-bordered"
+                          id="tableItensDevolucaoDeCompra"
+                        >
+                          <thead>
+                            <th></th>
+                            <th>Produto</th>
+                            <th>Descrição</th>
+                            <th>Quantidade Total</th>
+                            <th>Valor Unitário</th>
+                            <th>Valor Total</th>
+                            <th>Quantidade Devolvida</th>
+                            <th>Valor Devolvido</th>
+                          </thead>
+                          <tbody></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-input">
+                    <label>Data da Entrada:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      id="dataEntradaDevolucaoDeCompra"
+                      name="dataEntradaDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="form-input">
+                    <label>Data da Retirada:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      id="dataRetiradaDevolucaoDeCompra"
+                      name="dataRetiradaDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-input">
+                        <label>Frete por conta:</label>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          name="selectTranspDevolucaoDeCompra"
+                          id="selectTranspDevolucaoDeCompra"
+                          class="form-control inputDevolucaoDeCompra"
+                        >
+                          <option value=""></option>
+                          <option value="CIF">CIF</option>
+                          <option value="FOB">FOB</option>
+                          <option value="Terceiro">Terceiro</option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-input">
+                        <label>Responsável pelo Frete:</label>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          name="selectFreteDevolucaoDeCompra"
+                          id="selectFreteDevolucaoDeCompra"
+                          class="form-control inputDevolucaoDeCompra"
+                        >
+                          <option value=""></option>
+                          <option value="Sem Frete">Sem Frete</option>
+                          <option value="Próprio Remetente">
+                            Próprio Remetente
+                          </option>
+                          <option value="Próprio Destinatário">
+                            Próprio Destinatário
+                          </option>
+                          <option value="Terceiro">Terceiro</option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="form-input"
+                    id="divTransportadoraDevolucaoDeCompra"
+                  >
+                    <label>Transportadora:</label>
+                    <strong class="strongAlert">*</strong>
+                    <input
+                      type="text"
+                      list="datalistTransport"
+                      id="CNPJTranspDevolucaoDeCompra"
+                      name="CNPJTranspDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                    />
+                    <div></div>
+                    <br />
+                  </div>
+                  <div id="divPlacaTranspDevolucaoDeCompra">
+                    <div class="form-input">
+                      <label>Placa:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        name="inputPlacaDevolucaoDeCompra"
+                        id="inputPlacaDevolucaoDeCompra"
+                        class="form-control inputDevolucaoDeCompra"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                  </div>
+                  <div class="form-input">
+                    <label>Acordo do pagamento:</label>
+                    <strong class="strongAlert">*</strong>
+                    <textarea
+                      type="text"
+                      id="inputAcordoDevolucaoDeCompra"
+                      name="inputAcordoDevolucaoDeCompra"
+                      class="form-control inputDevolucaoDeCompra"
+                      rows="4"
+                    ></textarea>
+                    <div style="white-space: pre-wrap"></div>
+                    <br />
+                  </div>
 
-            <div class="hidden" style="display: none">
-                <input type="hidden" id="solicitante" name="solicitante" />
-                <input type="hidden" id="atendimento" name="atendimento" />
-                <input type="hidden" id="atividade" name="atividade" />
-                <input type="hidden" id="formMode" name="formMode" />
-                <input type="hidden" id="numProces" name="numProces" />
-                <input type="hidden" id="userCode" name="userCode" />
-                <input type="hidden" id="jsonMovimentoExclusao" name="jsonMovimentoExclusao" />
-                <input type="hidden" id="jsonMovimentoOrigemExclusao" name="jsonMovimentoOrigemExclusao" />
-                <input type="hidden" id="jsonItensDevolucaoCompras" name="jsonItensDevolucaoCompras">
-                <input type="hidden" name="idDocNFRemessa" id="idDocNFRemessa" />
-                <input type="hidden" name="idDocNFOrigem" id="idDocNFOrigem" />
-                <input type="hidden" name="idDocNFDevCompras" id="idDocNFDevCompras" />
-                <input type="hidden" name="idDocAnexoResolucao" id="idDocAnexoResolucao" />
+                  <div class="row">
+                    <div
+                      class="col-md-4 divAnexo"
+                      id="divAnexoNFDevolucaoDeCompra"
+                    >
+                      <label for="inputFileNFDevCompras">
+                        Nota Fiscal:
+                        <br />
+                        <div style="display: flex; align-items: baseline">
+                          <input
+                            type="file"
+                            name="inputFileNFDevCompras"
+                            id="inputFileNFDevCompras"
+                            class="form-control"
+                            style="display: none"
+                            multiple
+                          />
+                          <button
+                            class="btn btn-primary"
+                            onclick="$('#inputFileNFDevCompras').click();"
+                            style="margin-right: 5px"
+                          >
+                            Escolher arquivo
+                          </button>
+                          <div
+                            style="
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              overflow: hidden;
+                            "
+                          >
+                            Nenhum arquivo selecionado
+                          </div>
+                        </div>
+                      </label>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <script>
-                var beforeSendValidate = function (numState, nextState) {
-                    return ValidaCampos();
-                };
-            </script>
-        </form>
-    </body>
+            <div class="form-input">
+              <label>Usuário:</label>
+              <strong class="strongAlert">*</strong>
+              <select
+                name="usuario"
+                id="usuario"
+                class="form-control inputInfoChamado"
+              ></select>
+              <div></div>
+              <br />
+            </div>
+            <div class="form-input">
+              <label>Observação:</label>
+              <strong class="strongAlert">*</strong>
+              <textarea
+                name="problema"
+                id="problema"
+                placeholder="Descreva o problema ocorrido"
+                class="form-control inputInfoChamado"
+                rows="3"
+              ></textarea>
+              <div></div>
+              <br />
+            </div>
+            <div class="form-input">
+              <label>
+                Enviar cópia para:
+                <i
+                  class="flaticon flaticon-info icon-sm"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Endereços de e-mail incluidos na notificação enviada por e-mail. (Separados por ;)"
+                ></i>
+              </label>
+              <input type="text" class="form-control" name="email" id="email" />
+              <br />
+            </div>
+          </div>
+          <div class="tab-pane" id="tabHistorico">
+            <div id="divHistorico"></div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div id="divResolucaoChamado" class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Resolução</h3>
+        </div>
+        <div class="panel-body">
+          <div id="divDecisao">
+            <div class="form-input form-input-checkbox">
+              <input
+                type="radio"
+                name="decisao"
+                id="decisaoEnviar"
+                value="Enviar"
+                class="radioDecisao"
+              />
+              <label for="decisaoEnviar">Encerrar</label>
+            </div>
+            <div class="form-input form-input-checkbox">
+              <input
+                type="radio"
+                name="decisao"
+                id="decisaoRetornar"
+                value="Retornar"
+                class="radioDecisao"
+              />
+              <label for="decisaoRetornar">Retornar</label>
+            </div>
+          </div>
+          <div id="divInfoResolucaoChamado">
+            <div class="form-input" id="inputEncaminhaFinan">
+              <label>
+                Encaminhar ao Financeiro:
+                <input
+                  type="checkbox"
+                  name="checkboxEncaminhaFinan"
+                  id="checkboxEncaminhaFinan"
+                  class="inputResolucaoChamado"
+                />
+              </label>
+              <br /><br />
+            </div>
+            <div class="form-input">
+              <label for="tempo_gasto"> Tempo Gasto: </label>
+              <input
+                type="text"
+                name="tempo_gasto"
+                id="tempo_gasto"
+                class="form-control inputResolucaoChamado"
+                mask="00:00:00"
+                placeholder="hh:mm:ss"
+                maxlength="8"
+                style="width: 25%"
+              />
+              <br />
+            </div>
+            <div class="form-input">
+              <label for="solucao">Solução:</label>
+              <textarea
+                name="solucao"
+                id="solucao"
+                class="form-control inputResolucaoChamado"
+                rows="3"
+                placeholder="Informe a solução encontrada"
+              ></textarea>
+              <div></div>
+            </div>
+          </div>
+          <div id="divInfoObservacao">
+            <div class="form-input">
+              <label>Prazo de retorno:</label>
+              <input
+                type="text"
+                id="data_prazo_retorno"
+                name="data_prazo_retorno"
+                class="form-control inputObservacao"
+              />
+              <div></div>
+              <br />
+            </div>
+            <div class="form-input">
+              <label>Observação:</label>
+              <textarea
+                name="observacao"
+                id="observacao"
+                class="form-control inputObservacao"
+                rows="3"
+              ></textarea>
+              <div></div>
+            </div>
+          </div>
+          <div class="row" id="divAnexoResolucao">
+            <br />
+            <div class="col-md-4">
+              <label for="inputFileAnexoResolucao">
+                Anexos resolução:
+                <br />
+                <div style="display: flex; align-items: baseline">
+                  <input
+                    type="file"
+                    name="inputFileAnexoResolucao"
+                    id="inputFileAnexoResolucao"
+                    class="form-control"
+                    style="display: none"
+                    multiple
+                  />
+                  <button
+                    class="btn btn-primary"
+                    onclick="$('#inputFileAnexoResolucao').click();"
+                    style="margin-right: 5px"
+                  >
+                    Escolher arquivo
+                  </button>
+                  <div
+                    style="
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      overflow: hidden;
+                    "
+                  >
+                    Nenhum arquivo selecionado
+                  </div>
+                </div>
+              </label>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <datalist id="datalistTransport"> </datalist>
+
+      <div class="hidden" style="display: none">
+        <input type="hidden" id="solicitante" name="solicitante" />
+        <input type="hidden" id="atendimento" name="atendimento" />
+        <input type="hidden" id="atividade" name="atividade" />
+        <input type="hidden" id="formMode" name="formMode" />
+        <input type="hidden" id="numProces" name="numProces" />
+        <input type="hidden" id="userCode" name="userCode" />
+        <input
+          type="hidden"
+          id="jsonMovimentoExclusao"
+          name="jsonMovimentoExclusao"
+        />
+        <input
+          type="hidden"
+          id="jsonMovimentoOrigemExclusao"
+          name="jsonMovimentoOrigemExclusao"
+        />
+        <input
+          type="hidden"
+          id="jsonItensDevolucaoCompras"
+          name="jsonItensDevolucaoCompras"
+        />
+        <input type="hidden" name="idDocNFRemessa" id="idDocNFRemessa" />
+        <input type="hidden" name="idDocNFOrigem" id="idDocNFOrigem" />
+        <input type="hidden" name="idDocNFDevCompras" id="idDocNFDevCompras" />
+        <input
+          type="hidden"
+          name="idDocAnexoResolucao"
+          id="idDocAnexoResolucao"
+        />
+      </div>
+
+      <script>
+        var beforeSendValidate = function (numState, nextState) {
+          return ValidaCampos();
+        };
+      </script>
+    </form>
+  </body>
 </html>
