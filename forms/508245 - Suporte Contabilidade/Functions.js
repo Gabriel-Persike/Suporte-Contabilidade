@@ -1,4 +1,3 @@
-//teste
 function BuscaListDeUsuariosAD(solicitante = null) {
     var callback = {
         success: (listUsuarios) => {
@@ -121,6 +120,8 @@ function BuscaComplementos() {
 
 function BuscaImagemUsuario(usuario) {
     return new Promise(async (resolve, reject) => {
+        //const res = await fetch("http://homologacao.castilho.com.br:2020/api/public/social/image/" + usuario);//Homolog
+        //const res = await fetch("http://fluig.castilho.com.br:1010/api/public/social/image/" + usuario);//Prod
         const res = await fetch("/api/public/social/image/" + usuario);//Prod
         const blob = await res.blob();
         const img = new Image();
@@ -140,7 +141,7 @@ function BuscaNomeUsuario(usuario) {
 
 function BloqueiaCamposInfoChamado() {
     if ($("#formMode").val() == "VIEW") {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
             if ($(this).attr("id") == "coligadaExclusaoLancamento") {
                 $(this).siblings("div:first").html($(this).find("option:selected").text());
             } else {
@@ -153,7 +154,7 @@ function BloqueiaCamposInfoChamado() {
         $(".radioInfoChamado").on("click", () => { return false });
     }
     else {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
             if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
                 $(this).siblings("div:first").text($(this).find("option:selected").text());
             }
@@ -305,9 +306,6 @@ function ValidaCampos() {
                             }
                         }
                     }
-                    else if ($(this).attr("id") == "descEqpDevolucaoDeEqp" && $("#selectEqpDevolucaoDeEqp").val() != "Parcial") {
-
-                    }
                     else {
                         $(this).addClass("has-error");
                         if (valida == true) {
@@ -434,6 +432,24 @@ function ValidaCampos() {
                     }, 700);
                 }
             }
+        }
+        else if($("#categoria").val() == "Transferencia de Imobilizado"){
+            $(".InputImobilizado").each(function () {
+                if ($(this).val() == "" || $(this).val() == null) {
+                    $(this).addClass("has-error");
+
+                    if (valida == true) {
+                        valida = false;
+                        FLUIGC.toast({
+                            message: "Campo não preenchido!",
+                            type: "warning"
+                        });
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $(this).offset().top - (screen.height * 0.15)
+                        }, 700);
+                    }
+                }
+            });
         }
     }
     else if (atividade == 5) {
@@ -687,7 +703,7 @@ function BuscaMovimento(CODCOLIGADA, IDMOV) {
                     });
                     $("#movimentoExclusaoLancamento").val("");
                 }
-                else if (["1.1.02", "1.2.01", "1.2.24", "1.1.07", "1.2.05", "1.2.22", "1.2.06", "1.2.13", "1.2.14", "1.1.03", "1.2.07", "1.2.08", "1.2.10"].includes(movimento.values[0].CODTMV)) {
+                else if (["1.1.02", "1.2.01", "1.2.24", "1.1.07", "1.2.05", "1.2.22", "1.2.06", "1.2.13", "1.1.03", "1.2.07", "1.2.08"].includes(movimento.values[0].CODTMV)) {
                     $("#spanColigadaExclusaoMovimento").text(movimento.values[0].CODCOLIGADA + " - " + movimento.values[0].COLIGADA);
                     $("#spanMovimentoExclusaoMovimento").text(movimento.values[0].IDMOV);
                     $("#spanFilialExclusaoMovimento").text(movimento.values[0].CODFILIAL + " - " + movimento.values[0].FILIAL);
@@ -712,7 +728,6 @@ function BuscaMovimento(CODCOLIGADA, IDMOV) {
                         });
                     } else {
                         $("#checkboxCancelarMovOrigem").closest(".row").hide();
-                        $("#checkboxCancelarMovOrigem").prop("checked", false);
                     }
                 }
                 else {
@@ -961,8 +976,8 @@ function CriaDocFluig(idInput, i = 0) {
             DatasetFactory.createConstraint("conteudo", bytes, bytes, ConstraintType.MUST),
             DatasetFactory.createConstraint("nome", fileName, fileName, ConstraintType.SHOULD),
             DatasetFactory.createConstraint("descricao", fileName, fileName, ConstraintType.SHOULD),
-            DatasetFactory.createConstraint("pasta", 140518, 140518, ConstraintType.SHOULD), //Prod
-            //DatasetFactory.createConstraint("pasta", 26834, 26834, ConstraintType.SHOULD) //Homolog
+            //DatasetFactory.createConstraint("pasta", 140518, 140518, ConstraintType.SHOULD), //Prod
+            DatasetFactory.createConstraint("pasta", 26834, 26834, ConstraintType.SHOULD) //Homolog
         ], null, {
             success: function (dataset) {
                 if (!dataset || dataset == "" || dataset == null) {
@@ -1024,58 +1039,26 @@ function BuscaCentroDeCusto() {
                         DatasetFactory.createConstraint("permissaoGeral", "true", "true", ConstraintType.MUST)
                     )
                 }
-                DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, [DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)], null, {
+                DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, constraints, null, {
                     success: (CentrosDeCusto => {
                         console.log(CentrosDeCusto);
-                        if (CentrosDeCusto.values.length > 0) {
-                            var options = "";
-                            var codcoligada = "";
-                            CentrosDeCusto.values.forEach(ccusto => {
-                                if (codcoligada != ccusto.CODCOLIGADA) {
-                                    if (codcoligada != "") {
-                                        options += "</optgroup>";
-                                    }
-                                    options +=
-                                        "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
-                                    codcoligada = ccusto.CODCOLIGADA;
+                        var options = "";
+                        var codcoligada = "";
+                        CentrosDeCusto.values.forEach(ccusto => {
+                            if (codcoligada != ccusto.CODCOLIGADA) {
+                                if (codcoligada != "") {
+                                    options += "</optgroup>";
                                 }
+                                options +=
+                                    "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                codcoligada = ccusto.CODCOLIGADA;
+                            }
 
-                                options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
-                            });
-                            options += "</optgroup>";
+                            options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
+                        });
+                        options += "</optgroup>";
 
-                            resolve(options);
-                        }
-                        else {
-                            DatasetFactory.getDataset("colleagueGroup", null, [
-                                DatasetFactory.createConstraint("colleagueId", $("#userCode").val(), $("#userCode").val(), ConstraintType.MUST),
-                                DatasetFactory.createConstraint("groupId", "Obra", "Obra", ConstraintType.MUST, true),
-                            ], null, {
-                                success: (ds => {
-                                    console.log(ds)
-                                    var options = "";
-                                    ds.values.forEach(obra => {
-                                        var ds2 = DatasetFactory.getDataset("GCCUSTO", null, [
-                                            DatasetFactory.createConstraint("NOME", obra["colleagueGroupPK.groupId"], obra["colleagueGroupPK.groupId"], ConstraintType.MUST)
-                                        ], null);
-                                        console.log(ds2)
-                                        var ccusto = ds2.values[0];
-
-                                        options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.NOME + "'>" + ccusto.CODCCUSTO + " - " + ccusto.NOME + "</option>";
-                                    });
-                                    console.log(options);
-                                    resolve(options);
-                                }),
-                                error: (error => {
-                                    FLUIGC.toast({
-                                        title: "Erro ao buscar obras: ",
-                                        message: error,
-                                        type: "warning"
-                                    });
-                                })
-                            });
-                        }
-
+                        resolve(options);
                     }),
                     error: (error => {
                         FLUIGC.toast({
