@@ -323,10 +323,12 @@ $(document).ready(async () => {
         var optSelected = $("#CCustoDeOrigemImobilizado").val();
         $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
         $("#CCustoDeOrigemImobilizado").val(optSelected);
+        $("#CCustoOrigem").val($("#CCustoDeOrigemImobilizado").val().split('1 - ')[1]);
 
         var optSelected = $("#CCustoDeDestinoImobilizado").val();
         $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
         $("#CCustoDeDestinoImobilizado").val(optSelected);
+        $("#CCustoDestino").val($("#CCustoDeDestinoImobilizado").val().split('1 - ')[1]);
 
     });
     BuscaTransportadora().then(transportadora => {

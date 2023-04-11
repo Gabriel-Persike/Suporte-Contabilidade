@@ -862,10 +862,7 @@
                         <div class="col-md-4">
                           <b>Responsável pelo Frete:</b>
                           <strong class="strongAlert">*</strong>
-                          <div
-                            class="form-input form-input-checkbox"
-                            class="FreteImob"
-                          >
+                          <div class="form-input form-input-checkbox">
                             <input
                               type="checkbox"
                               name="CastilhoImobilizado"
@@ -873,7 +870,7 @@
                               value="CastilhoImobilizado"
                               class="FreteImob"
                             />
-                            <label for="CastilhoImobilizado">Castilho</label>
+                            <label for="CastilhoImobilizado">Castilho</label><br />
                             <input
                               type="checkbox"
                               name="TerceirosImobilizado"
@@ -881,7 +878,7 @@
                               value="TerceirosImobilizado"
                               class="FreteImob"
                             />
-                            <label for="TerceirosImobilizado">Terceiros</label>
+                            <label for="TerceirosImobilizado">Terceiros</label><br />
                             <input
                               type="checkbox"
                               name="SemFreteImobilizado"
@@ -889,8 +886,7 @@
                               value="SemFreteImobilizado"
                               class="FreteImob"
                             />
-                            <label for="SemFreteImobilizado">Sem Frete</label>
-                            <br />
+                            <label for="SemFreteImobilizado">Sem Frete</label> <br />
                             <input
                               type="checkbox"
                               name="TransporteRemetenteImobilizado"
@@ -900,7 +896,8 @@
                             />
                             <label for="TransporteRemetenteImobilizado"
                               >Transporte pelo próprio Remetente</label
-                            >
+                            ><br />
+                            <br />
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -2103,6 +2100,8 @@
           name="idDocAnexoResolucao"
           id="idDocAnexoResolucao"
         />
+        <input type="hidden" name="CCustoOrigem" id="CCustoOrigem" />
+        <input type="hidden" name="CCustoDestino" id="CCustoDestino" />
       </div>
 
       <script>

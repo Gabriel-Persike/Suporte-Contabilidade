@@ -168,6 +168,14 @@ function EnviaNotificacaoEncerramento(numSolic){
 					}
 					html+="<br>";
 				}
+				else if(hAPI.getCardValue("categoria") == "Transferencia de Imobilizado"){
+					html+=
+					"<br>\
+					<b>Imobilizado: </b><span>" + hAPI.getCardValue("Imobilizado") + "</span><br>\
+					<b>Centro de Custo de Origem: </b><span>" + hAPI.getCardValue("CCustoOrigem") + "</span><br>\
+					<b>Centro de Custo de Destino: </b><span>" + hAPI.getCardValue("CCustoDestino") + "</span><br>\
+					<b>Itens: </b><span>" + hAPI.getCardValue("ItensImobilizado") + "</span><br><br>";
+				}
 
 				html+=
 				"<b>Chamado:</b><br>" +  hAPI.getCardValue('problema').split("\n").join("<br>") + "</br></br>\
@@ -202,8 +210,8 @@ function EnviaNotificacaoEncerramento(numSolic){
             timeoutService: '100',
             params:{
                 to: BuscaRemetentes(),
-                from: "fluig@construtoracastilho.com.br", //Prod
-                //from: "no-reply@construtoracastilho.com.br", //Homolog
+                //from: "fluig@construtoracastilho.com.br", //Prod
+                from: "no-reply@construtoracastilho.com.br", //Homolog
                 subject: "[FLUIG] Chamado Encerrado - Suporte Contabilidade - " + hAPI.getCardValue("categoria"),
                 templateId: "TPL_SUPORTE_TI2",
                 dialectId: "pt_BR",
@@ -358,8 +366,14 @@ function EnviaNotificacaoAtualizacao(numSolic){
 					}
 					html+="<br>";
 				}
-
-
+				else if(hAPI.getCardValue("categoria") == "Transferencia de Imobilizado"){
+					html+=
+					"<br>\
+					<b>Imobilizado: </b><span>" + hAPI.getCardValue("Imobilizado") + "</span><br>\
+					<b>Centro de Custo de Origem: </b><span>" + hAPI.getCardValue("CCustoOrigem") + "</span><br>\
+					<b>Centro de Custo de Destino: </b><span>" + hAPI.getCardValue("CCustoDestino") + "</span><br>\
+					<b>Itens: </b><span>" + hAPI.getCardValue("ItensImobilizado") + "</span><br><br>";
+				}
 				html +="<b>Chamado:</b><br>" +  hAPI.getCardValue('problema').split("\n").join("<br>") + "</br></br>\
 				<b>Responsável:</b> " + getValue("WKUser") +"</br>\
 				" + atualizacao.split("\n").join("<br>") + "\
@@ -392,8 +406,8 @@ function EnviaNotificacaoAtualizacao(numSolic){
             timeoutService: '100',
             params:{
                 to: BuscaRemetentes(),
-                from: "fluig@construtoracastilho.com.br", //Prod
-                //from: "no-reply@construtoracastilho.com.br", //Homolog
+                //from: "fluig@construtoracastilho.com.br", //Prod
+                from: "no-reply@construtoracastilho.com.br", //Homolog
                 subject: "[FLUIG] Atualização - Suporte Contabilidade - " + hAPI.getCardValue("categoria"),
                 templateId: "TPL_SUPORTE_TI2",
                 dialectId: "pt_BR",
@@ -445,12 +459,14 @@ function BuscaRemetentes(){
 	var usuario = hAPI.getCardValue('usuario');
 	var solicitante = hAPI.getCardValue('solicitante');
 	var emailsCopia = hAPI.getCardValue("email");
-	//var listRemetentes = "gabriel.persike@castilho.com.br; ";//Homolog
-	var listRemetentes = "suporte.contabilidade@castilho.com.br; gabriel.persike@castilho.com.br; ";//Prod
+	var listRemetentes = "gabriel.persike@castilho.com.br; ";//Homolog
+	//var listRemetentes = "suporte.contabilidade@castilho.com.br; gabriel.persike@castilho.com.br; ";//Prod
 
-	if (hAPI.getCardValue("checkboxEncaminhaFinan") == "on" && hAPI.getCardValue("decisao") == "Enviar" && hAPI.getCardValue("atividade") == 5) {//Prod
+
+	if (hAPI.getCardValue("checkboxEncaminhaFinan") == "on" && hAPI.getCardValue("decisao") == "Enviar" && hAPI.getCardValue("atividade") == 5) {
 		listRemetentes+= "financeiro@castilho.com.br; ";
 	}
+
 
 	//Caso o solicitante não seja do grupo SuporteContabilidade inclui o e-mail na lista de remetentes
 	var ds = DatasetFactory.getDataset("colleagueGroup", null, [

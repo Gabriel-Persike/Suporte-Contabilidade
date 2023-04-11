@@ -459,17 +459,29 @@ function ValidaCampos() {
             });
             if (count == 0) {
                 $(".FreteImob").addClass("has-error");
-                FLUIGC.toast({
-                    message: "Campo não preenchido!",
-                    type: "warning"
-                });
+                if (valida == true) {
+                    valida = false;
+                    FLUIGC.toast({
+                        message: "Responsável pelo Frete não preenchido!",
+                        type: "warning"
+                    });
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $(".FreteImob").offset().top - (screen.height * 0.15)
+                    }, 700);
+                }
             }
             if (count > 1) {
                 $(".FreteImob").addClass("has-error");
-                FLUIGC.toast({
-                    message: "Favor Selecionar somente uma opção de frete!",
-                    type: "warning"
-                });
+                if (valida == true) {
+                    valida = false;
+                    FLUIGC.toast({
+                        message: "Favor selecionar somente um responsável pelo Frete!",
+                        type: "warning"
+                    });
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $(".FreteImob").offset().top - (screen.height * 0.15)
+                    }, 700);
+                }
             }
         }
     }
