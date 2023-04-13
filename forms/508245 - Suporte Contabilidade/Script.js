@@ -103,12 +103,14 @@ $(document).ready(async () => {
         if ($(this).val() == "Transferencia de Imobilizado") {
             $("#divTransferenciaDeImobilizados").slideDown();
             $("#CCustoDeOrigemImobilizado").on('change', function(params) {
-                $("#CCustoOrigem").val($("#CCustoDeOrigemImobilizado").val().split('1 - ')[1]);
-                console.log($("#CCustoOrigem").val())  
+                texto = $("#CCustoDeOrigemImobilizado").val()
+                novo_texto = texto.replace("1 - ", "")
+                $("#CCustoOrigem").val(novo_texto)
             })
             $("#CCustoDeDestinoImobilizado").on('change', function(params) {
-                $("#CCustoDestino").val($("#CCustoDeDestinoImobilizado").val().split('1 - ')[1]);
-                console.log($("#CCustoDestino").val())  
+                texto = $("#CCustoDeDestinoImobilizado").val()
+                novo_texto = texto.replace("1 - ", "")
+                $("#CCustoDestino").val(novo_texto)
             })
         }
         else {
