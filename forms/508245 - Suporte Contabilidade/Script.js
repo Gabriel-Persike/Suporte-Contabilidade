@@ -28,7 +28,7 @@ $(document).ready(async () => {
             setDataPrazoRetorno();
         }
     });
-    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .FreteImob").on("click", function () {
+    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado, .FreteImob").on("click", function () {
         $(this).removeClass("has-error");
     });
     $("#email").on("blur", function () {
@@ -102,6 +102,14 @@ $(document).ready(async () => {
         }
         if ($(this).val() == "Transferencia de Imobilizado") {
             $("#divTransferenciaDeImobilizados").slideDown();
+            $("#CCustoDeOrigemImobilizado").on('change', function(params) {
+                $("#CCustoOrigem").val($("#CCustoDeOrigemImobilizado").val().split('1 - ')[1]);
+                console.log($("#CCustoOrigem").val())  
+            })
+            $("#CCustoDeDestinoImobilizado").on('change', function(params) {
+                $("#CCustoDestino").val($("#CCustoDeDestinoImobilizado").val().split('1 - ')[1]);
+                console.log($("#CCustoDestino").val())  
+            })
         }
         else {
             $("#divTransferenciaDeImobilizados").slideUp();
@@ -323,12 +331,10 @@ $(document).ready(async () => {
         var optSelected = $("#CCustoDeOrigemImobilizado").val();
         $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
         $("#CCustoDeOrigemImobilizado").val(optSelected);
-        $("#CCustoOrigem").val($("#CCustoDeOrigemImobilizado").val().split('1 - ')[1]);
 
         var optSelected = $("#CCustoDeDestinoImobilizado").val();
         $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
         $("#CCustoDeDestinoImobilizado").val(optSelected);
-        $("#CCustoDestino").val($("#CCustoDeDestinoImobilizado").val().split('1 - ')[1]);
 
     });
     BuscaTransportadora().then(transportadora => {
@@ -542,10 +548,19 @@ $(document).ready(async () => {
         }
 
         if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            $(".InputImobilizado").attr('style', "background-color: #fff; color: black");
+            $(".InputImobilizado").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
             $(".InputImobilizado").attr('readonly', true);
-            document.getElementById("CCustoDeOrigemImobilizado").disabled = true
-            document.getElementById("CCustoDeDestinoImobilizado").disabled = true
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    for (let j = 0; j < checkboxes.length; j++) {
+                    if (i !== j) {
+                        checkboxes[j].disabled = true;
+                    }
+                    }
+                    break;
+                }
+            }
             $("#divTransferenciaDeImobilizados").show();
         }
         else {
@@ -614,11 +629,9 @@ $(document).ready(async () => {
         }
 
         if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            $(".InputImobilizado").attr('style', "background-color: #fff; color: black");
-            $(".InputImobilizado").attr('readonly', true);
-            document.getElementById("CCustoDeOrigemImobilizado").disabled = true
-            document.getElementById("CCustoDeDestinoImobilizado").disabled = true
             $("#divTransferenciaDeImobilizados").show();
+            $(".InputImobilizado").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado").attr('readonly', true);
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
