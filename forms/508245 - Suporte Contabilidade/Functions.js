@@ -590,7 +590,6 @@ async function BuscaObras(usuario) {
             DatasetFactory.createConstraint("groupId", "Central de Equipamentos", "Central de Equipamentos", ConstraintType.SHOULD)
         ];
 
-
         var dsName = 'group';
         if (usuarioTI != "true") {//Se usuario nao for TI filtra as obras que o usuario esta no grupo
             constraints.push(DatasetFactory.createConstraint("colleagueId", usuario, usuario, ConstraintType.MUST));
@@ -1056,7 +1055,7 @@ function CriaDocFluig(idInput, i = 0) {
     reader.readAsDataURL(files[i]);
 }
 
-function BuscaCentroDeCusto() {
+function BuscaCentroDeCusto(permissaoGeral = false) {
     return new Promise((resolve, reject) => {
         DatasetFactory.getDataset("colleagueGroup", null, [
             DatasetFactory.createConstraint("groupId", "SuporteContabilidade", "SuporteContabilidade", ConstraintType.SHOULD),
@@ -1064,10 +1063,11 @@ function BuscaCentroDeCusto() {
             DatasetFactory.createConstraint("colleagueId", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
         ], null, {
             success: (grupos => {
+                console.log(grupos)
                 var constraints = [
                     DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
                 ];
-                if (grupos.values.length > 0) {
+                if (grupos.values.length > 0 || permissaoGeral === true) {
                     constraints.push(
                         DatasetFactory.createConstraint("permissaoGeral", "true", "true", ConstraintType.MUST)
                     )

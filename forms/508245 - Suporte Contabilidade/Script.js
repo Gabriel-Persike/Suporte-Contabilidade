@@ -329,16 +329,18 @@ $(document).ready(async () => {
         var optSelected = $("#ObraDevolucaoDeCompra").val();
         $("#ObraDevolucaoDeCompra").html("<option></option>" + options);
         $("#ObraDevolucaoDeCompra").val(optSelected);
-
+        
         var optSelected = $("#CCustoDeOrigemImobilizado").val();
         $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
         $("#CCustoDeOrigemImobilizado").val(optSelected);
+    });
 
+    BuscaCentroDeCusto(true).then(options => {
         var optSelected = $("#CCustoDeDestinoImobilizado").val();
         $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
         $("#CCustoDeDestinoImobilizado").val(optSelected);
+    })
 
-    });
     BuscaTransportadora().then(transportadora => {
         transportadora.values.forEach(transp => {
             if (transp.CGC == "   -   ") {
