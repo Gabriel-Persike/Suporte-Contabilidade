@@ -763,7 +763,7 @@
                       <br />
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <b>Centro de Custo de Origem:</b>
                         <strong class="strongAlert">*</strong>
                         <select
@@ -776,7 +776,7 @@
                         </select>
                         <br />
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <b>Centro de Custo de Destino:</b>
                         <strong class="strongAlert">*</strong>
                         <select
@@ -789,95 +789,80 @@
                         </select>
                         <br />
                       </div>
-                      <div class="col-md-4">
-                        <b>Itens:</b>
-                        <strong class="strongAlert">*</strong>
-                        <input
-                          type="text"
-                          name="ItensImobilizado"
-                          id="ItensImobilizado"
-                          class="form-control InputImobilizado"
-                        />
-                        <br />
+                    </div>
+                    <div id="divItens">
+                      <div id="divItensTransferenciaImobilizados"></div>
+                      <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <div class="row">
+                            <span
+                              class="col-md-3"
+                              id="Itens"
+                              style="
+                                margin-top: 0.6%;
+                                font-size: medium;
+                                font-weight: bold;
+                              "
+                            >
+                              Itens
+                            </span>
+                          </div>
+                        </div>
+                        <div class="panel-body">
+                          <table
+                            class="table table-bordered"
+                            id="tableItensTransferenciaImobilizado"
+                          >
+                            <thead>
+                              <tr>
+                                <th>Descrição</th>
+                                <th>Prefixo</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                                <th id="thRemoverItem">Remover Item</th>
+                                <!--<th>Valor Unitário</th>
+                                <th>Valor Total</th>
+                                <th>Quantidade Devolvida</th>
+                                <th>Valor Devolvido</th>-->
+                              </tr>
+                            </thead>
+                            <tbody
+                              id="bodyTableTransferenciaImoblizados"
+                            ></tbody>
+                          </table>
+                          <div class="col-md-12 text-right" id="divBotao">
+                            <button
+                              class="addItem btn"
+                              id="addItem"
+                              style="background: #156302;
+                              color: white;
+                              "
+                            >
+                              Adicionar Item
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-4">
-                        <b>Quantidade:</b>
-                        <strong class="strongAlert">*</strong>
-                        <input
-                          type="text"
-                          name="QuantidadeImobilizado"
-                          id="QuantidadeImobilizado"
-                          class="form-control InputImobilizado"
-                        />
-                        <br />
-                      </div>
-                      <div class="col-md-4">
-                        <b>Prefixo:</b>
-                        <strong class="strongAlert">*</strong>
-                        <input
-                          type="text"
-                          name="PrefixoImobilizado"
-                          id="PrefixoImobilizado"
-                          class="form-control InputImobilizado"
-                        />
-                        <br />
-                      </div>
-                      <div class="col-md-4">
-                        <b>Valor:</b>
-                        <strong class="strongAlert">*</strong>
-                        <input
-                          type="text"
-                          name="ValorImobilizado"
-                          id="ValorImobilizado"
-                          class="form-control InputImobilizado"
-                        />
-                        <br />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <b>Responsável pelo Frete:</b>
-                        <strong class="strongAlert">*</strong>
-                        <div class="form-input form-input-checkbox">
-                          <input
-                            type="checkbox"
-                            name="CastilhoImobilizado"
-                            id="CastilhoImobilizado"
-                            value="CastilhoImobilizado"
-                            class="FreteImob"
-                          />
-                          <label for="CastilhoImobilizado">Castilho</label
-                          ><br />
-                          <input
-                            type="checkbox"
-                            name="TerceirosImobilizado"
-                            id="TerceirosImobilizado"
-                            value="TerceirosImobilizado"
-                            class="FreteImob"
-                          />
-                          <label for="TerceirosImobilizado">Terceiros</label
-                          ><br />
-                          <input
-                            type="checkbox"
-                            name="SemFreteImobilizado"
-                            id="SemFreteImobilizado"
-                            value="SemFreteImobilizado"
-                            class="FreteImob"
-                          />
-                          <label for="SemFreteImobilizado">Sem Frete</label>
-                          <br />
-                          <input
-                            type="checkbox"
-                            name="TransporteRemetenteImobilizado"
-                            id="TranspFreteImoborteRemetenteImobilizado"
-                            value="TransporteRemetenteImobilizado"
-                            class="FreteImob"
-                          />
-                          <label for="TransporteRemetenteImobilizado"
-                            >Transporte pelo próprio Remetente</label
-                          ><br />
+                        <div class="form-input">
+                          <label>Responsável pelo Frete:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectFreteImobilizado"
+                            id="selectFreteImobilizado"
+                            class="form-control InputImobilizado"
+                          >
+                            <option value=""></option>
+                            <option value="Castilho">Castilho</option>
+                            <option value="Terceiros">Terceiros</option>
+                            <option value="Sem Frete">Sem Frete</option>
+                            <option value="Transporte pelo proprio Remetente">
+                              Transporte pelo próprio Remetente
+                            </option>
+                          </select>
+                          <div></div>
                           <br />
                         </div>
                       </div>
@@ -1138,6 +1123,11 @@
         />
         <input type="hidden" name="CCustoOrigem" id="CCustoOrigem" />
         <input type="hidden" name="CCustoDestino" id="CCustoDestino" />
+        <input
+        type="hidden"
+        id="jsonItensImobilizado"
+        name="jsonItensImobilizado"
+      />
       </div>
 
       <script>

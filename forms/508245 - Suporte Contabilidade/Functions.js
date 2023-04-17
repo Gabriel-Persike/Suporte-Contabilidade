@@ -450,38 +450,19 @@ function ValidaCampos() {
                     }
                 }
             });
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            let count = 0;
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    count++;
-                }
-            });
-            if (count == 0) {
-                $(".FreteImob").addClass("has-error");
-                if (valida == true) {
-                    valida = false;
-                    FLUIGC.toast({
-                        message: "Responsável pelo Frete não preenchido!",
-                        type: "warning"
-                    });
-                    $([document.documentElement, document.body]).animate({
-                        scrollTop: $(".FreteImob").offset().top - (screen.height * 0.15)
-                    }, 700);
-                }
-            }
-            if (count > 1) {
-                $(".FreteImob").addClass("has-error");
-                if (valida == true) {
-                    valida = false;
-                    FLUIGC.toast({
-                        message: "Favor selecionar somente um responsável pelo Frete!",
-                        type: "warning"
-                    });
-                    $([document.documentElement, document.body]).animate({
-                        scrollTop: $(".FreteImob").offset().top - (screen.height * 0.15)
-                    }, 700);
-                }
+            if ($("#formMode").val() == 'ADD') {
+                var listJson = [];
+                $(".trTableTransferenciaImoblizados").each(function () {
+                var json = {
+                    desc: $(this).find(".DescItemImob").val(),
+                    prefixo: $(this).find(".PrefixItemImob").val(),
+                    quantidade: $(this).find(".QuantItemImob").val(),
+                    valor: $(this).find(".ValorItemImob").val(),
+                };
+                    var convertido = json;
+                    listJson.push(convertido);
+                });
+                $("#jsonItensImobilizado").val(JSON.stringify(listJson))
             }
         }
     }
@@ -1329,4 +1310,59 @@ function BuscaContrato() {
             })
         });
     });
+}
+
+function InsereRowTableTransfImob(){
+    $("#bodyTableTransferenciaImoblizados").append('\
+    <tr class="trTableTransferenciaImoblizados">\
+        <td>\
+            <input type="text" class="InputImobilizado" id="DescItemImob" />\
+        </td>\
+        <td>\
+            <input type="text" class="PrefixItemImob" />\
+        </td>\
+        <td>\
+            <input type="number " class="InputImobilizado" id="QuantItemImob" />\
+        </td>\
+        <td>\
+            <input type="text" class="InputImobilizado"  id="ValorItemImob" />\
+        </td>\
+        <td>\
+            <i\
+                class="flaticon flaticon-trash icon-lg"\
+                style="padding-left: 3%"\
+            ></i>\
+        </td>\
+    </tr>\
+    ')
+    $(".flaticon").on('click', function () {
+        $(this).closest('.trTableTransferenciaImoblizados').remove();
+    });
+}
+
+function InsereItensNaTableImob(){
+    var ItensImob = $("#jsonItensImobilizado").val();
+    ItensImob = JSON.parse(ItensImob);
+
+    $("#thRemoverItem").remove();
+    $("#divBotao").remove();
+
+    for (i = 0; i < ItensImob.length; i++) {
+        $("#bodyTableTransferenciaImoblizados").append('\
+        <tr class="trTableTransferenciaImoblizados">\
+            <td>\
+                <span>' + ItensImob[i].desc + '</span>\
+            </td>\
+            <td>\
+                <span>' + ItensImob[i].prefixo + '</span>\
+            </td>\
+            <td>\
+                <span>' + ItensImob[i].quantidade + '</span>\
+            </td>\
+            <td>\
+                <span>' + ItensImob[i].valor + '</span>\
+            </td>\
+        </tr>\
+    ')
+    }
 }

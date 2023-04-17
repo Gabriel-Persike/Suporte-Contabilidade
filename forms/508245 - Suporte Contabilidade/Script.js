@@ -28,7 +28,7 @@ $(document).ready(async () => {
             setDataPrazoRetorno();
         }
     });
-    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado, .FreteImob").on("click", function () {
+    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado").on("click", function () {
         $(this).removeClass("has-error");
     });
     $("#email").on("blur", function () {
@@ -111,6 +111,9 @@ $(document).ready(async () => {
                 texto = $("#CCustoDeDestinoImobilizado").val()
                 novo_texto = texto.replace("1 - ", "")
                 $("#CCustoDestino").val(novo_texto)
+            })
+            $("#addItem").on('click', function () {
+                InsereRowTableTransfImob()
             })
         }
         else {
@@ -552,19 +555,9 @@ $(document).ready(async () => {
         }
 
         if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            $(".InputImobilizado").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado").attr('readonly', true);
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            for (let i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    for (let j = 0; j < checkboxes.length; j++) {
-                    if (i !== j) {
-                        checkboxes[j].disabled = true;
-                    }
-                    }
-                    break;
-                }
-            }
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);
+            InsereItensNaTableImob();
             $("#divTransferenciaDeImobilizados").show();
         }
         else {
@@ -634,8 +627,8 @@ $(document).ready(async () => {
 
         if ($("#categoria").val() == "Transferencia de Imobilizado") {
             $("#divTransferenciaDeImobilizados").show();
-            $(".InputImobilizado").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado").attr('readonly', true);
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
