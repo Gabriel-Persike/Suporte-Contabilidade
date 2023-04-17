@@ -1322,7 +1322,7 @@ function InsereRowTableTransfImob(){
             <input type="text" class="PrefixItemImob" />\
         </td>\
         <td>\
-            <input type="number " class="InputImobilizado" id="QuantItemImob" />\
+            <input type="number" class="InputImobilizado" id="QuantItemImob" />\
         </td>\
         <td>\
             <input type="text" class="InputImobilizado"  id="ValorItemImob" />\
