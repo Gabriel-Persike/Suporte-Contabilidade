@@ -141,7 +141,7 @@ function BuscaNomeUsuario(usuario) {
 
 function BloqueiaCamposInfoChamado() {
     if ($("#formMode").val() == "VIEW") {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
             if ($(this).attr("id") == "coligadaExclusaoLancamento") {
                 $(this).siblings("div:first").html($(this).find("option:selected").text());
             } else {
@@ -154,14 +154,13 @@ function BloqueiaCamposInfoChamado() {
         $(".radioInfoChamado").on("click", () => { return false });
     }
     else {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
             if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
                 $(this).siblings("div:first").text($(this).find("option:selected").text());
             }
             else {
                 $(this).siblings("div:first").html($(this).val().split("\n").join("<br>"));
             }
-
             $(this).hide();
         });
 
@@ -434,7 +433,7 @@ function ValidaCampos() {
             }
         }
         else if($("#categoria").val() == "Transferencia de Imobilizado"){
-            $(".InputImobilizado").each(function () {
+            $(".InputImobilizado, .InputTabelaImobilizado").each(function () {
                 if ($(this).val() == "" || $(this).val() == null) {
                     $(this).addClass("has-error");
 
@@ -450,19 +449,20 @@ function ValidaCampos() {
                     }
                 }
             });
-            if ($("#formMode").val() == 'ADD') {
-                var listJson = [];
+            if ($("#formMode").val() == "ADD") {
+                /*Este if é feito para que o JSON só seja executado na atividade 0, e a condição inicial é
+                atividade = 0 ou atividade = 4*/
+                var ListImobilizados = [];
                 $(".trTableTransferenciaImoblizados").each(function () {
                 var json = {
-                    desc: $(this).find(".DescItemImob").val(),
-                    prefixo: $(this).find(".PrefixItemImob").val(),
-                    quantidade: $(this).find(".QuantItemImob").val(),
-                    valor: $(this).find(".ValorItemImob").val(),
+                    DescricaoImob: $(this).find(".DescItemImob").val(),
+                    PrefixoImob: $(this).find(".PrefixItemImob").val(),
+                    QuantidadeImob: $(this).find(".QuantItemImob").val(),
+                    ValorImob: $(this).find(".ValorItemImob").val(),
                 };
-                    var convertido = json;
-                    listJson.push(convertido);
+                    ListImobilizados.push(json);
                 });
-                $("#jsonItensImobilizado").val(JSON.stringify(listJson))
+                $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
             }
         }
     }
@@ -716,7 +716,7 @@ function BuscaMovimento(CODCOLIGADA, IDMOV) {
                     });
                     $("#movimentoExclusaoLancamento").val("");
                 }
-                else if (["1.1.02", "1.2.01", "1.2.24", "1.1.07", "1.2.05", "1.2.22", "1.2.06", "1.2.13", "1.1.03", "1.2.07", "1.2.08"].includes(movimento.values[0].CODTMV)) {
+                else if (["1.1.02", "1.2.01", "1.2.24", "1.1.07", "1.2.05", "1.2.22", "1.2.06", "1.2.13", "1.2.14", "1.1.03", "1.2.07", "1.2.08", "1.2.10"].includes(movimento.values[0].CODTMV)) {
                     $("#spanColigadaExclusaoMovimento").text(movimento.values[0].CODCOLIGADA + " - " + movimento.values[0].COLIGADA);
                     $("#spanMovimentoExclusaoMovimento").text(movimento.values[0].IDMOV);
                     $("#spanFilialExclusaoMovimento").text(movimento.values[0].CODFILIAL + " - " + movimento.values[0].FILIAL);
@@ -741,6 +741,7 @@ function BuscaMovimento(CODCOLIGADA, IDMOV) {
                         });
                     } else {
                         $("#checkboxCancelarMovOrigem").closest(".row").hide();
+                        $("#checkboxCancelarMovOrigem").prop("checked", false);
                     }
                 }
                 else {
@@ -1044,11 +1045,11 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
             DatasetFactory.createConstraint("colleagueId", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
         ], null, {
             success: (grupos => {
-                console.log(grupos)
                 var constraints = [
                     DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
                 ];
                 if (grupos.values.length > 0 || permissaoGeral === true) {
+                    console.log(permissaoGeral)
                     constraints.push(
                         DatasetFactory.createConstraint("permissaoGeral", "true", "true", ConstraintType.MUST)
                     )
@@ -1056,23 +1057,56 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
                 DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, constraints, null, {
                     success: (CentrosDeCusto => {
                         console.log(CentrosDeCusto);
-                        var options = "";
-                        var codcoligada = "";
-                        CentrosDeCusto.values.forEach(ccusto => {
-                            if (codcoligada != ccusto.CODCOLIGADA) {
-                                if (codcoligada != "") {
-                                    options += "</optgroup>";
+                        if (CentrosDeCusto.values.length > 0) {
+                            var options = "";
+                            var codcoligada = "";
+                            CentrosDeCusto.values.forEach(ccusto => {
+                                if (codcoligada != ccusto.CODCOLIGADA) {
+                                    if (codcoligada != "") {
+                                        options += "</optgroup>";
+                                    }
+                                    options +=
+                                        "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                    codcoligada = ccusto.CODCOLIGADA;
                                 }
-                                options +=
-                                    "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
-                                codcoligada = ccusto.CODCOLIGADA;
-                            }
 
-                            options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
-                        });
-                        options += "</optgroup>";
+                                options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
+                            });
+                            options += "</optgroup>";
 
-                        resolve(options);
+                            resolve(options);
+                        }
+                        else {
+                            console.log("Entrou no else FLUIGS")
+                            DatasetFactory.getDataset("colleagueGroup", null, [
+                                DatasetFactory.createConstraint("colleagueId", $("#userCode").val(), $("#userCode").val(), ConstraintType.MUST),
+                                DatasetFactory.createConstraint("groupId", "Obra", "Obra", ConstraintType.MUST, true),
+                            ], null, {
+                                success: (ds => {
+                                    console.log(ds)
+                                    var options = "";
+                                    ds.values.forEach(obra => {
+                                        var ds2 = DatasetFactory.getDataset("GCCUSTO", null, [
+                                            DatasetFactory.createConstraint("NOME", obra["colleagueGroupPK.groupId"], obra["colleagueGroupPK.groupId"], ConstraintType.MUST)
+                                        ], null);
+                                        console.log(ds2)
+                                        var ccusto = ds2.values[0];
+
+                                        options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.NOME + "'>" + ccusto.CODCCUSTO + " - " + ccusto.NOME + "</option>";
+                                    });
+                                    console.log(options);
+                                    resolve(options);
+                                }),
+                                error: (error => {
+                                    FLUIGC.toast({
+                                        title: "Erro ao buscar obras: ",
+                                        message: error,
+                                        type: "warning"
+                                    });
+                                })
+                            });
+                        }
+
                     }),
                     error: (error => {
                         FLUIGC.toast({
@@ -1314,53 +1348,53 @@ function BuscaContrato() {
 
 function InsereRowTableTransfImob(){
     $("#bodyTableTransferenciaImoblizados").append('\
-    <tr class="trTableTransferenciaImoblizados">\
-        <td>\
-            <input type="text" class="InputImobilizado" id="DescItemImob" />\
-        </td>\
-        <td>\
-            <input type="text" class="PrefixItemImob" />\
-        </td>\
-        <td>\
-            <input type="number" class="InputImobilizado" id="QuantItemImob" />\
-        </td>\
-        <td>\
-            <input type="text" class="InputImobilizado"  id="ValorItemImob" />\
-        </td>\
-        <td>\
-            <i\
-                class="flaticon flaticon-trash icon-lg"\
-                style="padding-left: 3%"\
-            ></i>\
-        </td>\
-    </tr>\
+        <tr class="trTableTransferenciaImoblizados">\
+            <td>\
+                <input type="text" class="InputTabelaImobilizado DescItemImob form-control" id="DescItemImob" />\
+            </td>\
+            <td>\
+                <input type="text" class="PrefixItemImob form-control" />\
+            </td>\
+            <td>\
+                <input type="number" class="InputTabelaImobilizado QuantItemImob form-control" id="QuantItemImob" />\
+            </td>\
+            <td>\
+                <input type="text" placeholder="R$ ###,##" class="InputTabelaImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
+            </td>\
+            <td style="text-align: center;">\
+                <button id="botaoRemoverItemImobilizado" class="botaoRemoverItemImobilizado btn btn-danger">\
+                    <i class="flaticon flaticon-trash icon-md" style="/* padding-left: 3%; */">\
+                    </i>\
+                </button>\
+            </td>\
+        </tr>\
     ')
-    $(".flaticon").on('click', function () {
-        $(this).closest('.trTableTransferenciaImoblizados').remove();
+    $(".botaoRemoverItemImobilizado").on('click', function () {
+        var ConfirmacaoDeletarItem = confirm("Deseja confirmar a remoção deste Item?");
+        if (ConfirmacaoDeletarItem == true) {
+            $(this).closest('.trTableTransferenciaImoblizados').remove();
+        }
     });
 }
 
 function InsereItensNaTableImob(){
-    var ItensImob = $("#jsonItensImobilizado").val();
-    ItensImob = JSON.parse(ItensImob);
+    var ItensImobilizado = $("#jsonItensImobilizado").val();
+    ItensImobilizado = JSON.parse(ItensImobilizado);
 
-    $("#thRemoverItem").remove();
-    $("#divBotao").remove();
-
-    for (i = 0; i < ItensImob.length; i++) {
+    for (i = 0; i < ItensImobilizado.length; i++) {
         $("#bodyTableTransferenciaImoblizados").append('\
         <tr class="trTableTransferenciaImoblizados">\
             <td>\
-                <span>' + ItensImob[i].desc + '</span>\
+                <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
             </td>\
             <td>\
-                <span>' + ItensImob[i].prefixo + '</span>\
+                <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
             </td>\
             <td>\
-                <span>' + ItensImob[i].quantidade + '</span>\
+                <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
             </td>\
             <td>\
-                <span>' + ItensImob[i].valor + '</span>\
+                <span>' + ItensImobilizado[i].ValorImob + '</span>\
             </td>\
         </tr>\
     ')

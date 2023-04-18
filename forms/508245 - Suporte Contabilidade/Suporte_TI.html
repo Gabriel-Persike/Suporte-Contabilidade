@@ -774,6 +774,7 @@
                         >
                           <option value=""></option>
                         </select>
+                        <div></div>
                         <br />
                       </div>
                       <div class="col-md-6">
@@ -787,6 +788,7 @@
                         >
                           <option value=""></option>
                         </select>
+                        <div></div>
                         <br />
                       </div>
                     </div>
@@ -819,7 +821,6 @@
                                 <th>Prefixo</th>
                                 <th>Quantidade</th>
                                 <th>Valor</th>
-                                <th id="thRemoverItem">Remover Item</th>
                                 <!--<th>Valor Unitário</th>
                                 <th>Valor Total</th>
                                 <th>Quantidade Devolvida</th>
@@ -832,11 +833,9 @@
                           </table>
                           <div class="col-md-12 text-right" id="divBotao">
                             <button
-                              class="addItem btn"
-                              id="addItem"
-                              style="background: #156302;
-                              color: white;
-                              "
+                              class="addItemImobilizado btn"
+                              id="addItemImobilizado"
+                              style="background: #156302; color: white"
                             >
                               Adicionar Item
                             </button>
@@ -866,7 +865,6 @@
                           <br />
                         </div>
                       </div>
-
                       <div class="col-md-4">
                         <b>Quantidade de Caixas/Volume:</b>
                         <strong class="strongAlert">*</strong>
@@ -876,6 +874,7 @@
                           id="QuantImobilizado"
                           class="form-control InputImobilizado"
                         />
+                        <div></div>
                         <br />
                       </div>
                       <div class="col-md-4">
@@ -887,11 +886,24 @@
                           id="PesoImobilizado"
                           class="form-control InputImobilizado"
                         />
+                        <div></div>
                         <br />
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
+                        <label>Data Saída Equipamento:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          id="data_saida_equipamento"
+                          name="data_saida_equipamento"
+                          class="form-control inputInfoChamado"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="col-md-4">
                         <b>Endereço de Origem:</b>
                         <strong class="strongAlert">*</strong>
                         <input
@@ -900,8 +912,9 @@
                           id="EndOrImobilizado"
                           class="form-control InputImobilizado"
                         />
+                        <div></div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <b>Endereço do Destino:</b>
                         <strong class="strongAlert">*</strong>
                         <input
@@ -910,6 +923,7 @@
                           id="EndDesImobilizado"
                           class="form-control InputImobilizado"
                         />
+                        <div></div>
                       </div>
                     </div>
                   </div>
@@ -1124,10 +1138,10 @@
         <input type="hidden" name="CCustoOrigem" id="CCustoOrigem" />
         <input type="hidden" name="CCustoDestino" id="CCustoDestino" />
         <input
-        type="hidden"
-        id="jsonItensImobilizado"
-        name="jsonItensImobilizado"
-      />
+          type="hidden"
+          id="jsonItensImobilizado"
+          name="jsonItensImobilizado"
+        />
       </div>
 
       <script>

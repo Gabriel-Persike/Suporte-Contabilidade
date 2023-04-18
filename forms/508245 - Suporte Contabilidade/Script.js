@@ -28,7 +28,7 @@ $(document).ready(async () => {
             setDataPrazoRetorno();
         }
     });
-    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado").on("click", function () {
+    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado, .InputTabelaImobilizado").on("click", function () {
         $(this).removeClass("has-error");
     });
     $("#email").on("blur", function () {
@@ -102,19 +102,6 @@ $(document).ready(async () => {
         }
         if ($(this).val() == "Transferencia de Imobilizado") {
             $("#divTransferenciaDeImobilizados").slideDown();
-            $("#CCustoDeOrigemImobilizado").on('change', function(params) {
-                texto = $("#CCustoDeOrigemImobilizado").val()
-                novo_texto = texto.replace("1 - ", "")
-                $("#CCustoOrigem").val(novo_texto)
-            })
-            $("#CCustoDeDestinoImobilizado").on('change', function(params) {
-                texto = $("#CCustoDeDestinoImobilizado").val()
-                novo_texto = texto.replace("1 - ", "")
-                $("#CCustoDestino").val(novo_texto)
-            })
-            $("#addItem").on('click', function () {
-                InsereRowTableTransfImob()
-            })
         }
         else {
             $("#divTransferenciaDeImobilizados").slideUp();
@@ -233,6 +220,32 @@ $(document).ready(async () => {
             });
         }
     });
+    /*$("#CCustoDeOrigemImobilizado").on('change', function() {
+        var texto = $("#CCustoDeOrigemImobilizado").val().split(' - ')
+        texto = texto.slice(1, 3)
+        texto = texto.join(" - ")
+        //$("#CCustoOrigem").val(novo_texto)
+    })
+    $("#CCustoDeDestinoImobilizado").on('change', function() {
+        var texto = $("#CCustoDeDestinoImobilizado").val()
+        texto = texto.slice(1, 3)
+        texto = texto.join(" - ")
+        //$("#CCustoDestino").val(novo_texto)
+    })*/
+    $("#addItemImobilizado").on('click', function () {
+        InsereRowTableTransfImob()
+        $(".ValorItemImob:last").on('blur', function () {
+            console.log("Entrou no blur")
+            var regex = /^\s*R\$\s*\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?\s*$/;
+            if (regex.test($(this).val())) {
+                return true;
+            } else {
+                alert("Verificar Valor.\n\
+Favor escrever no formato R$ ###,##")
+                return false;
+            }
+        })
+    })
     $("#movimentoExclusaoLancamento").mask("9999999");
     $("#selectFreteDevolucaoDeEqp").on("change", function () {
         if ($(this).val() == "Próprio Remetente") {
@@ -339,6 +352,7 @@ $(document).ready(async () => {
     });
 
     BuscaCentroDeCusto(true).then(options => {
+        console.log("Entrou no centro de Custo destino")
         var optSelected = $("#CCustoDeDestinoImobilizado").val();
         $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
         $("#CCustoDeDestinoImobilizado").val(optSelected);
@@ -382,6 +396,7 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataRetiradaDevolucaoDeEqp");
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
+        FLUIGC.calendar("#data_saida_equipamento");
         $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransferenciaDeImobilizados").hide();
         BuscaListDeUsuariosAD($("#solicitante").val());
         $("#atabHistorico").closest("li").hide();
@@ -397,7 +412,7 @@ $(document).ready(async () => {
         $(".radioDecisao:checked").attr("checked", false);
         $(".radioDecisaoConclusao:checked").attr("checked", false);
         $("#observacao, #solucao, #divDecisaoConclusao").val("");
-        $(".divAnexo, #divAnexoResolucao").hide();
+        $(".divAnexo, #divAnexoResolucao, #divBotao").hide();
         BuscaComplementos();
         BuscaObras($("#userCode").val());
 
@@ -544,7 +559,7 @@ $(document).ready(async () => {
 
             GeraItensDevolucaoCompras();
 
-            if (($("#selectTranspDevolucaoDeCompra").val() == "Terceiro" || $("#selectFreteDevolucaoDeCompra").val() == "Próprio Remetente") && $("#selectFreteDevolucaoDeCompra").val() != "Sem Frete") {
+            if (($("#selectFreteDevolucaoDeCompra").val() == "Terceiro" || $("#selectFreteDevolucaoDeCompra").val() == "Próprio Remetente") && $("#selectFreteDevolucaoDeCompra").val() != "Sem Frete") {
                 $("#divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra").closest(".form-input").show();
             } else {
                 $("#divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra").hide();
@@ -555,8 +570,8 @@ $(document).ready(async () => {
         }
 
         if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);
+            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
             InsereItensNaTableImob();
             $("#divTransferenciaDeImobilizados").show();
         }
@@ -569,6 +584,7 @@ $(document).ready(async () => {
         BuscaComplementos();
         BloqueiaCamposInfoChamado();
         $("#divResolucaoChamado, #divAnexoNF").hide();
+        $(".divAnexo, #divAnexoResolucao").hide();
 
 
         if ($("#categoria").val() == "Exclusão de Lançamento") {

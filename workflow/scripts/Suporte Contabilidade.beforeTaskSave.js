@@ -169,12 +169,15 @@ function EnviaNotificacaoEncerramento(numSolic){
 					html+="<br>";
 				}
 				else if(hAPI.getCardValue("categoria") == "Transferencia de Imobilizado"){
+					var ItensImobilizado =  hAPI.getCardValue("jsonItensImobilizado");
+					ItensImobilizado = JSON.parse(ItensImobilizado);
+
 					html+=
 					"<br>\
-					<b>Imobilizado: </b><span>" + hAPI.getCardValue("Imobilizado") + "</span><br>\
-					<b>Centro de Custo de Origem: </b><span>" + hAPI.getCardValue("CCustoOrigem") + "</span><br>\
-					<b>Centro de Custo de Destino: </b><span>" + hAPI.getCardValue("CCustoDestino") + "</span><br>\
-					<b>Itens: </b><span>" + hAPI.getCardValue("ItensImobilizado") + "</span><br><br>";
+					<b>Endereço de Origem: </b><span>" + hAPI.getCardValue("EndOrImobilizado") + "</span><br>\
+					<b>Endereço de Destino: </b><span>" + hAPI.getCardValue("EndDesImobilizado") + "</span><br>\
+					<b>Quantidade de Itens: </b><span>" + ItensImobilizado.length + "</span><br>\
+					<b>Data da Saída: </b><span>" + hAPI.getCardValue("data_saida_equipamento") + "</span><br><br>";
 				}
 
 				html+=
@@ -367,12 +370,14 @@ function EnviaNotificacaoAtualizacao(numSolic){
 					html+="<br>";
 				}
 				else if(hAPI.getCardValue("categoria") == "Transferencia de Imobilizado"){
+					var ItensImobilizado =  hAPI.getCardValue("jsonItensImobilizado");
+					ItensImobilizado = JSON.parse(ItensImobilizado);
 					html+=
 					"<br>\
-					<b>Imobilizado: </b><span>" + hAPI.getCardValue("Imobilizado") + "</span><br>\
-					<b>Centro de Custo de Origem: </b><span>" + hAPI.getCardValue("CCustoOrigem") + "</span><br>\
-					<b>Centro de Custo de Destino: </b><span>" + hAPI.getCardValue("CCustoDestino") + "</span><br>\
-					<b>Itens: </b><span>" + hAPI.getCardValue("ItensImobilizado") + "</span><br><br>";
+					<b>Endereço de Origem: </b><span>" + hAPI.getCardValue("EndOrImobilizado") + "</span><br>\
+					<b>Endereço de Destino: </b><span>" + hAPI.getCardValue("EndDesImobilizado") + "</span><br>\
+					<b>Quantidade de Itens: </b><span>" + ItensImobilizado.length + "</span><br>\
+					<b>Data da Saída: </b><span>" + hAPI.getCardValue("data_saida_equipamento") + "</span><br><br>";
 				}
 				html +="<b>Chamado:</b><br>" +  hAPI.getCardValue('problema').split("\n").join("<br>") + "</br></br>\
 				<b>Responsável:</b> " + getValue("WKUser") +"</br>\
