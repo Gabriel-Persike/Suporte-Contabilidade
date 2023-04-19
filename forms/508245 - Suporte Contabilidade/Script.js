@@ -584,7 +584,7 @@ Favor escrever no formato R$ ###,##")
         BuscaComplementos();
         BloqueiaCamposInfoChamado();
         $("#divResolucaoChamado, #divAnexoNF").hide();
-        $(".divAnexo, #divAnexoResolucao").hide();
+        $(".divAnexo, #divAnexoResolucao, #divBotao").hide();
 
 
         if ($("#categoria").val() == "Exclusão de Lançamento") {
@@ -641,10 +641,11 @@ Favor escrever no formato R$ ###,##")
             $("#divCamposDevolucaoDeCompras").hide();
         }
 
-        if ($("#categoria").val() == "Transferencia de Imobilizado") {
+        if ($("#categoria").text() == "Transferência de Imobilizado") {
+            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
+            InsereItensNaTableImob();
             $("#divTransferenciaDeImobilizados").show();
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
