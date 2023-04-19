@@ -1351,16 +1351,16 @@ function InsereRowTableTransfImob(){
     $("#bodyTableTransferenciaImoblizados").append('\
         <tr class="trTableTransferenciaImoblizados">\
             <td>\
-                <input type="text" class="InputTabelaImobilizado DescItemImob form-control" id="DescItemImob" />\
+                <input type="text" class="InputImobilizado DescItemImob form-control" id="DescItemImob" />\
             </td>\
             <td>\
                 <input type="text" class="PrefixItemImob form-control" />\
             </td>\
             <td>\
-                <input type="number" class="InputTabelaImobilizado QuantItemImob form-control" id="QuantItemImob" />\
+                <input type="number" class="InputImobilizado QuantItemImob form-control" id="QuantItemImob" />\
             </td>\
             <td>\
-                <input type="text" placeholder="R$ ###,##" class="InputTabelaImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
+                <input type="text" placeholder="R$ ###,##" class="InputImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
             </td>\
             <td style="text-align: center;">\
                 <button id="botaoRemoverItemImobilizado_' + id + '" class="botaoRemoverItemImobilizado btn btn-danger">\
