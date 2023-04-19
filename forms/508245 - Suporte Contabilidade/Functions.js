@@ -1347,6 +1347,7 @@ function BuscaContrato() {
 }
 
 function InsereRowTableTransfImob(){
+    var id = Date.now();
     $("#bodyTableTransferenciaImoblizados").append('\
         <tr class="trTableTransferenciaImoblizados">\
             <td>\
@@ -1362,18 +1363,18 @@ function InsereRowTableTransfImob(){
                 <input type="text" placeholder="R$ ###,##" class="InputTabelaImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
             </td>\
             <td style="text-align: center;">\
-                <button id="botaoRemoverItemImobilizado" class="botaoRemoverItemImobilizado btn btn-danger">\
+                <button id="botaoRemoverItemImobilizado_' + id + '" class="botaoRemoverItemImobilizado btn btn-danger">\
                     <i class="flaticon flaticon-trash icon-md" style="/* padding-left: 3%; */">\
                     </i>\
                 </button>\
             </td>\
         </tr>\
     ')
-    $(".botaoRemoverItemImobilizado").on('click', function () {
-        var ConfirmacaoDeletarItem = confirm("Deseja confirmar a remoção deste Item?");
-        if (ConfirmacaoDeletarItem == true) {
-            $(this).closest('.trTableTransferenciaImoblizados').remove();
-        }
+    
+    $("#botaoRemoverItemImobilizado_" + id).on('click', function() {
+        console.log("Executou o on");
+        $(this).closest('.trTableTransferenciaImoblizados').remove();
+        confirm("Deseja confirmar a remoção deste Item?");
     });
 }
 
