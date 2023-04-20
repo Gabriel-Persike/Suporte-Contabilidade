@@ -727,14 +727,14 @@ Favor escrever no formato R$ ###,##")
         else {
             $("#divCamposDevolucaoDeCompras").hide();
         }
-    }
-    if ($("#categoria").text() == "Transferência de Imobilizado") {
-        /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-        $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-        InsereItensNaTableImob();
-        $("#divTransferenciaDeImobilizados").show();
-    }
-    else {
-        $("#divTransferenciaDeImobilizados").hide();
+        if ($("#categoria").text() == "Transferência de Imobilizado") {
+            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
+            InsereItensNaTableImob();
+            $("#divTransferenciaDeImobilizados").show();
+        }
+        else {
+            $("#divTransferenciaDeImobilizados").hide();
+        }
     }
 });
