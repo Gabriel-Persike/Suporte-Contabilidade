@@ -118,10 +118,9 @@ function BuscaComplementos() {
     });
 }
 
+
 function BuscaImagemUsuario(usuario) {
     return new Promise(async (resolve, reject) => {
-        //const res = await fetch("http://homologacao.castilho.com.br:2020/api/public/social/image/" + usuario);//Homolog
-        //const res = await fetch("http://fluig.castilho.com.br:1010/api/public/social/image/" + usuario);//Prod
         const res = await fetch("/api/public/social/image/" + usuario);//Prod
         const blob = await res.blob();
         const img = new Image();
@@ -304,6 +303,9 @@ function ValidaCampos() {
                                 }, 700);
                             }
                         }
+                    }
+                    else if ($(this).attr("id") == "descEqpDevolucaoDeEqp" && $("#selectEqpDevolucaoDeEqp").val() != "Parcial") {
+
                     }
                     else {
                         $(this).addClass("has-error");
@@ -990,8 +992,8 @@ function CriaDocFluig(idInput, i = 0) {
             DatasetFactory.createConstraint("conteudo", bytes, bytes, ConstraintType.MUST),
             DatasetFactory.createConstraint("nome", fileName, fileName, ConstraintType.SHOULD),
             DatasetFactory.createConstraint("descricao", fileName, fileName, ConstraintType.SHOULD),
-            //DatasetFactory.createConstraint("pasta", 140518, 140518, ConstraintType.SHOULD), //Prod
-            DatasetFactory.createConstraint("pasta", 26834, 26834, ConstraintType.SHOULD) //Homolog
+            DatasetFactory.createConstraint("pasta", 140518, 140518, ConstraintType.SHOULD), //Prod
+            //DatasetFactory.createConstraint("pasta", 26834, 26834, ConstraintType.SHOULD) //Homolog
         ], null, {
             success: function (dataset) {
                 if (!dataset || dataset == "" || dataset == null) {
