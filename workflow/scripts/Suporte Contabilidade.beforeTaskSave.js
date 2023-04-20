@@ -466,7 +466,7 @@ function BuscaRemetentes(){
 	var usuario = hAPI.getCardValue('usuario');
 	var solicitante = hAPI.getCardValue('solicitante');
 	var emailsCopia = hAPI.getCardValue("email");
-	var listRemetentes = "gabriel.persike@castilho.com.br; ";//Homolog
+	//var listRemetentes = "gabriel.persike@castilho.com.br; ";//Homolog
 	//var listRemetentes = "vitor.vale@castilho.com.br; ";//Homolog
 	var listRemetentes = "suporte.contabilidade@castilho.com.br; gabriel.persike@castilho.com.br; ";//Prod
 
