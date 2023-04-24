@@ -220,31 +220,11 @@ $(document).ready(async () => {
             });
         }
     });
-    /*$("#CCustoDeOrigemImobilizado").on('change', function() {
-        var texto = $("#CCustoDeOrigemImobilizado").val().split(' - ')
-        texto = texto.slice(1, 3)
-        texto = texto.join(" - ")
-        //$("#CCustoOrigem").val(novo_texto)
-    })
-    $("#CCustoDeDestinoImobilizado").on('change', function() {
-        var texto = $("#CCustoDeDestinoImobilizado").val()
-        texto = texto.slice(1, 3)
-        texto = texto.join(" - ")
-        //$("#CCustoDestino").val(novo_texto)
-    })*/
     $("#addItemImobilizado").on('click', function () {
-        InsereRowTableTransfImob()
-        $(".ValorItemImob:last").on('blur', function () {
-            //console.log("Entrou no blur")
-            var regex = /^\s*R\$\s*\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?\s*$/;
-            if (regex.test($(this).val())) {
-                return true;
-            } else {
-                alert("Verificar Valor.\n\
-Favor escrever no formato R$ ###,##")
-                return false;
-            }
-        })
+        InsereRowTableTransfImob();
+        $(".ValorItemImob").keypress(function() {
+            $(this).mask('###.###.##0,00', {reverse: true});
+        });
     })
     $("#movimentoExclusaoLancamento").mask("9999999");
     $("#selectFreteDevolucaoDeEqp").on("change", function () {
@@ -560,7 +540,7 @@ Favor escrever no formato R$ ###,##")
             GeraItensDevolucaoCompras();
 
             if (($("#selectFreteDevolucaoDeCompra").val() == "Terceiro" || $("#selectFreteDevolucaoDeCompra").val() == "Próprio Remetente") && $("#selectFreteDevolucaoDeCompra").val() != "Sem Frete") {
-                $("#divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra").closest(".form-input").show();
+                $("#divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra").show();
             } else {
                 $("#divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra").hide();
             }

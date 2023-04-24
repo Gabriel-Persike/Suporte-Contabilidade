@@ -1373,10 +1373,17 @@ function InsereRowTableTransfImob(){
         </tr>\
     ')
     
-    $("#botaoRemoverItemImobilizado_" + id).on('click', function() {
+    $(".botaoRemoverItemImobilizado:last").on('click', function() {
         console.log("Executou o on");
-        $(this).closest('.trTableTransferenciaImoblizados').remove();
-        confirm("Deseja confirmar a remoção deste Item?");
+        var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+        if (ReotrnoConfirmo == true) {
+            $(this).closest('.trTableTransferenciaImoblizados').remove();
+        }
+        else{
+            false
+        }
+        
+       
     });
 }
 
