@@ -1051,14 +1051,12 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
                     DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
                 ];
                 if (grupos.values.length > 0 || permissaoGeral === true) {
-                    console.log(permissaoGeral)
                     constraints.push(
                         DatasetFactory.createConstraint("permissaoGeral", "true", "true", ConstraintType.MUST)
                     )
                 }
                 DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, constraints, null, {
                     success: (CentrosDeCusto => {
-                        console.log(CentrosDeCusto);
                         if (CentrosDeCusto.values.length > 0) {
                             var options = "";
                             var codcoligada = "";
@@ -1079,24 +1077,20 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
                             resolve(options);
                         }
                         else {
-                            console.log("Entrou no else FLUIGS")
                             DatasetFactory.getDataset("colleagueGroup", null, [
                                 DatasetFactory.createConstraint("colleagueId", $("#userCode").val(), $("#userCode").val(), ConstraintType.MUST),
                                 DatasetFactory.createConstraint("groupId", "Obra", "Obra", ConstraintType.MUST, true),
                             ], null, {
                                 success: (ds => {
-                                    console.log(ds)
                                     var options = "";
                                     ds.values.forEach(obra => {
                                         var ds2 = DatasetFactory.getDataset("GCCUSTO", null, [
                                             DatasetFactory.createConstraint("NOME", obra["colleagueGroupPK.groupId"], obra["colleagueGroupPK.groupId"], ConstraintType.MUST)
                                         ], null);
-                                        console.log(ds2)
                                         var ccusto = ds2.values[0];
 
                                         options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.NOME + "'>" + ccusto.CODCCUSTO + " - " + ccusto.NOME + "</option>";
                                     });
-                                    console.log(options);
                                     resolve(options);
                                 }),
                                 error: (error => {
@@ -1187,7 +1181,6 @@ function BuscaTransportadora() {
                         message: "Erro ao buscar transportadoras",
                         type: "warning"
                     });
-                    console.log()
                     reject();
                 }
                 else {
@@ -1374,7 +1367,6 @@ function InsereRowTableTransfImob(){
     ')
     
     $(".botaoRemoverItemImobilizado:last").on('click', function() {
-        console.log("Executou o on");
         var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
         if (ReotrnoConfirmo == true) {
             $(this).closest('.trTableTransferenciaImoblizados').remove();

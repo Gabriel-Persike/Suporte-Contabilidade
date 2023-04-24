@@ -332,7 +332,6 @@ $(document).ready(async () => {
     });
 
     BuscaCentroDeCusto(true).then(options => {
-        //console.log("Entrou no centro de Custo destino")
         var optSelected = $("#CCustoDeDestinoImobilizado").val();
         $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
         $("#CCustoDeDestinoImobilizado").val(optSelected);
