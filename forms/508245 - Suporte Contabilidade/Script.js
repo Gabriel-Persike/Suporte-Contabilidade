@@ -331,10 +331,12 @@ $(document).ready(async () => {
         $("#CCustoDeOrigemImobilizado").val(optSelected);
     });
 
-    BuscaCentroDeCusto(true).then(options => {
-        var optSelected = $("#CCustoDeDestinoImobilizado").val();
-        $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
-        $("#CCustoDeDestinoImobilizado").val(optSelected);
+    $("#categoria").on('change', function () {
+        BuscaCentroDeCusto(true).then(options => {
+            var optSelected = $("#CCustoDeDestinoImobilizado").val();
+            $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
+            $("#CCustoDeDestinoImobilizado").val(optSelected);
+        })
     })
 
     BuscaTransportadora().then(transportadora => {

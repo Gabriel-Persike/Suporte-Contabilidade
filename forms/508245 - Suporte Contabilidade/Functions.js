@@ -118,7 +118,6 @@ function BuscaComplementos() {
     });
 }
 
-
 function BuscaImagemUsuario(usuario) {
     return new Promise(async (resolve, reject) => {
         const res = await fetch("/api/public/social/image/" + usuario);//Prod
@@ -147,6 +146,19 @@ function BloqueiaCamposInfoChamado() {
                 $(this).siblings("div:first").text($(this).text().split("\n").join("<br>"));
             }
 
+            $(this).hide();
+        });
+
+        $(".radioInfoChamado").on("click", () => { return false });
+    }
+    else if($("#atividade").val() == 4){
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+            if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
+                $(this).siblings("div:first").text($(this).find("option:selected").text());
+            }
+            else {
+                $(this).siblings("div:first").html($(this).val().split("\n").join("<br>"));
+            }
             $(this).hide();
         });
 
@@ -451,21 +463,17 @@ function ValidaCampos() {
                     }
                 }
             });
-            if ($("#formMode").val() == "ADD") {
-                /*Este if é feito para que o JSON só seja executado na atividade 0, e a condição inicial é
-                atividade = 0 ou atividade = 4*/
-                var ListImobilizados = [];
-                $(".trTableTransferenciaImoblizados").each(function () {
-                var json = {
-                    DescricaoImob: $(this).find(".DescItemImob").val(),
-                    PrefixoImob: $(this).find(".PrefixItemImob").val(),
-                    QuantidadeImob: $(this).find(".QuantItemImob").val(),
-                    ValorImob: $(this).find(".ValorItemImob").val(),
-                };
-                    ListImobilizados.push(json);
-                });
-                $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
-            }
+            var ListImobilizados = [];
+            $(".trTableTransferenciaImoblizados").each(function () {
+            var json = {
+                DescricaoImob: $(this).find(".DescItemImob").val(),
+                PrefixoImob: $(this).find(".PrefixItemImob").val(),
+                QuantidadeImob: $(this).find(".QuantItemImob").val(),
+                ValorImob: $(this).find(".ValorItemImob").val(),
+            };
+                ListImobilizados.push(json);
+            });
+            $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
         }
     }
     else if (atividade == 5) {
@@ -1061,17 +1069,28 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
                             var options = "";
                             var codcoligada = "";
                             CentrosDeCusto.values.forEach(ccusto => {
-                                if (codcoligada != ccusto.CODCOLIGADA) {
-                                    if (codcoligada != "") {
-                                        options += "</optgroup>";
+                                if ($("#categoria").val() == 'Transferencia de Imobilizado') {
+                                    if (ccusto.CODCOLIGADA == '1') {
+                                        if (codcoligada != ccusto.CODCOLIGADA){
+                                            codcoligada = ccusto.CODCOLIGADA;
+                                            options += "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                        }
+                                        options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
                                     }
-                                    options +=
-                                        "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
-                                    codcoligada = ccusto.CODCOLIGADA;
                                 }
-
-                                options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
-                            });
+                                else{
+                                    if (codcoligada != ccusto.CODCOLIGADA) {
+                                        if (codcoligada != "") {
+                                            options += "</optgroup>";
+                                        }
+                                        options +=
+                                            "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                        codcoligada = ccusto.CODCOLIGADA;
+                                    }
+    
+                                    options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
+                                }
+                             });
                             options += "</optgroup>";
 
                             resolve(options);
@@ -1380,23 +1399,44 @@ function InsereRowTableTransfImob(){
 }
 
 function InsereItensNaTableImob(){
+    var atividade = $("#atividade").val() 
     var ItensImobilizado = $("#jsonItensImobilizado").val();
     ItensImobilizado = JSON.parse(ItensImobilizado);
 
-    for (i = 0; i < ItensImobilizado.length; i++) {
+    if (atividade == '5') {
+        for (i = 0; i < ItensImobilizado.length; i++) {
+            $("#bodyTableTransferenciaImoblizados").append('\
+            <tr class="trTableTransferenciaImoblizados">\
+                <td>\
+                    <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].ValorImob + '</span>\
+                </td>\
+            </tr>\
+        ')
+        }
+    }
+    else if (atividade == 4) {
         $("#bodyTableTransferenciaImoblizados").append('\
         <tr class="trTableTransferenciaImoblizados">\
             <td>\
-                <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
+                <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
             </td>\
             <td>\
-                <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
+                <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
             </td>\
             <td>\
-                <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
+                <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
             </td>\
             <td>\
-                <span>' + ItensImobilizado[i].ValorImob + '</span>\
+                <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
             </td>\
         </tr>\
     ')
