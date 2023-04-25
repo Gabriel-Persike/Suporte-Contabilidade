@@ -1424,21 +1424,23 @@ function InsereItensNaTableImob(){
         }
     }
     else if (atividade == 4) {
-        $("#bodyTableTransferenciaImoblizados").append('\
-        <tr class="trTableTransferenciaImoblizados">\
-            <td>\
-                <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
-            </td>\
-            <td>\
-                <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
-            </td>\
-            <td>\
-                <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
-            </td>\
-            <td>\
-                <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
-            </td>\
-        </tr>\
-    ')
+        for (i = 0; i < ItensImobilizado.length; i++) {
+            $("#bodyTableTransferenciaImoblizados").append('\
+            <tr class="trTableTransferenciaImoblizados">\
+                <td>\
+                    <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
+                </td>\
+                <td>\
+                    <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
+                </td>\
+                <td>\
+                    <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
+                </td>\
+                <td>\
+                    <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
+                </td>\
+            </tr>\
+        ')   
+        }
     }
 }
