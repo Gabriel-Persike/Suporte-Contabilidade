@@ -411,6 +411,12 @@ $(document).ready(async () => {
         BuscaComplementos();
         BuscaObras($("#userCode").val());
 
+        BuscaCentroDeCusto(true).then(options => {
+            var optSelected = $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val();
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val(optSelected);
+        })
+
         if (atividade == 4) {
             $("#divDecisao, #divDecisaoConclusao, #divInfoResolucaoChamado").hide();
             BloqueiaCamposInfoChamado();
