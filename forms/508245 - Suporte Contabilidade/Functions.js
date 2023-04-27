@@ -139,7 +139,7 @@ function BuscaNomeUsuario(usuario) {
 
 function BloqueiaCamposInfoChamado() {
     if ($("#formMode").val() == "VIEW") {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
             if ($(this).attr("id") == "coligadaExclusaoLancamento") {
                 $(this).siblings("div:first").html($(this).find("option:selected").text());
             } else {
@@ -151,7 +151,7 @@ function BloqueiaCamposInfoChamado() {
 
         $(".radioInfoChamado").on("click", () => { return false });
     }
-    else {
+    else if($("#atividade").val() == 4){
         $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp").each(function () {
             if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
                 $(this).siblings("div:first").text($(this).find("option:selected").text());
@@ -159,7 +159,19 @@ function BloqueiaCamposInfoChamado() {
             else {
                 $(this).siblings("div:first").html($(this).val().split("\n").join("<br>"));
             }
+            $(this).hide();
+        });
 
+        $(".radioInfoChamado").on("click", () => { return false });
+    }
+    else {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
+            if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
+                $(this).siblings("div:first").text($(this).find("option:selected").text());
+            }
+            else {
+                $(this).siblings("div:first").html($(this).val().split("\n").join("<br>"));
+            }
             $(this).hide();
         });
 
@@ -434,6 +446,35 @@ function ValidaCampos() {
                 }
             }
         }
+        else if($("#categoria").val() == "Transferencia de Imobilizado"){
+            $(".InputImobilizado, .InputTabelaImobilizado").each(function () {
+                if ($(this).val() == "" || $(this).val() == null) {
+                    $(this).addClass("has-error");
+
+                    if (valida == true) {
+                        valida = false;
+                        FLUIGC.toast({
+                            message: "Campo não preenchido!",
+                            type: "warning"
+                        });
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $(this).offset().top - (screen.height * 0.15)
+                        }, 700);
+                    }
+                }
+            });
+            var ListImobilizados = [];
+            $(".trTableTransferenciaImoblizados").each(function () {
+            var json = {
+                DescricaoImob: $(this).find(".DescItemImob").val(),
+                PrefixoImob: $(this).find(".PrefixItemImob").val(),
+                QuantidadeImob: $(this).find(".QuantItemImob").val(),
+                ValorImob: $(this).find(".ValorItemImob").val(),
+            };
+                ListImobilizados.push(json);
+            });
+            $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
+        }
     }
     else if (atividade == 5) {
         $(".inputInfoChamado").each(function () {
@@ -539,7 +580,6 @@ async function BuscaObras(usuario) {
             DatasetFactory.createConstraint("groupId", "Matriz", "Matriz", ConstraintType.SHOULD),
             DatasetFactory.createConstraint("groupId", "Central de Equipamentos", "Central de Equipamentos", ConstraintType.SHOULD)
         ];
-
 
         var dsName = 'group';
         if (usuarioTI != "true") {//Se usuario nao for TI filtra as obras que o usuario esta no grupo
@@ -1007,7 +1047,7 @@ function CriaDocFluig(idInput, i = 0) {
     reader.readAsDataURL(files[i]);
 }
 
-function BuscaCentroDeCusto() {
+function BuscaCentroDeCusto(permissaoGeral = false) {
     return new Promise((resolve, reject) => {
         DatasetFactory.getDataset("colleagueGroup", null, [
             DatasetFactory.createConstraint("groupId", "SuporteContabilidade", "SuporteContabilidade", ConstraintType.SHOULD),
@@ -1018,29 +1058,39 @@ function BuscaCentroDeCusto() {
                 var constraints = [
                     DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)
                 ];
-                if (grupos.values.length > 0) {
+                if (grupos.values.length > 0 || permissaoGeral === true) {
                     constraints.push(
                         DatasetFactory.createConstraint("permissaoGeral", "true", "true", ConstraintType.MUST)
                     )
                 }
-                DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, [DatasetFactory.createConstraint("usuario", $("#solicitante").val(), $("#solicitante").val(), ConstraintType.MUST)], null, {
+                DatasetFactory.getDataset("BuscaPermissaoColigadasUsuario", null, constraints, null, {
                     success: (CentrosDeCusto => {
-                        console.log(CentrosDeCusto);
                         if (CentrosDeCusto.values.length > 0) {
                             var options = "";
                             var codcoligada = "";
                             CentrosDeCusto.values.forEach(ccusto => {
-                                if (codcoligada != ccusto.CODCOLIGADA) {
-                                    if (codcoligada != "") {
-                                        options += "</optgroup>";
+                                if ($("#categoria").val() == 'Transferencia de Imobilizado') {
+                                    if (ccusto.CODCOLIGADA == '1') {
+                                        if (codcoligada != ccusto.CODCOLIGADA){
+                                            codcoligada = ccusto.CODCOLIGADA;
+                                            options += "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                        }
+                                        options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
                                     }
-                                    options +=
-                                        "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
-                                    codcoligada = ccusto.CODCOLIGADA;
                                 }
-
-                                options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
-                            });
+                                else{
+                                    if (codcoligada != ccusto.CODCOLIGADA) {
+                                        if (codcoligada != "") {
+                                            options += "</optgroup>";
+                                        }
+                                        options +=
+                                            "<optgroup label='" + ccusto.CODCOLIGADA + " - " + ccusto.NOMEFANTASIA + "'>";
+                                        codcoligada = ccusto.CODCOLIGADA;
+                                    }
+    
+                                    options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.perfil + "'>" + ccusto.CODCCUSTO + " - " + ccusto.perfil + "</option>";
+                                }
+                             });
                             options += "</optgroup>";
 
                             resolve(options);
@@ -1051,18 +1101,15 @@ function BuscaCentroDeCusto() {
                                 DatasetFactory.createConstraint("groupId", "Obra", "Obra", ConstraintType.MUST, true),
                             ], null, {
                                 success: (ds => {
-                                    console.log(ds)
                                     var options = "";
                                     ds.values.forEach(obra => {
                                         var ds2 = DatasetFactory.getDataset("GCCUSTO", null, [
                                             DatasetFactory.createConstraint("NOME", obra["colleagueGroupPK.groupId"], obra["colleagueGroupPK.groupId"], ConstraintType.MUST)
                                         ], null);
-                                        console.log(ds2)
                                         var ccusto = ds2.values[0];
 
                                         options += "<option value='" + ccusto.CODCOLIGADA + " - " + ccusto.CODCCUSTO + " - " + ccusto.NOME + "'>" + ccusto.CODCCUSTO + " - " + ccusto.NOME + "</option>";
                                     });
-                                    console.log(options);
                                     resolve(options);
                                 }),
                                 error: (error => {
@@ -1153,7 +1200,6 @@ function BuscaTransportadora() {
                         message: "Erro ao buscar transportadoras",
                         type: "warning"
                     });
-                    console.log()
                     reject();
                 }
                 else {
@@ -1312,4 +1358,89 @@ function BuscaContrato() {
             })
         });
     });
+}
+
+function InsereRowTableTransfImob(){
+    var id = Date.now();
+    $("#bodyTableTransferenciaImoblizados").append('\
+        <tr class="trTableTransferenciaImoblizados">\
+            <td>\
+                <input type="text" class="InputImobilizado DescItemImob form-control" id="DescItemImob" />\
+            </td>\
+            <td>\
+                <input type="text" class="PrefixItemImob form-control" />\
+            </td>\
+            <td>\
+                <input type="number" class="InputImobilizado QuantItemImob form-control" id="QuantItemImob" />\
+            </td>\
+            <td>\
+                <input type="text" placeholder="R$ ###,##" class="InputImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
+            </td>\
+            <td style="text-align: center;">\
+                <button id="botaoRemoverItemImobilizado_' + id + '" class="botaoRemoverItemImobilizado btn btn-danger">\
+                    <i class="flaticon flaticon-trash icon-md" style="/* padding-left: 3%; */">\
+                    </i>\
+                </button>\
+            </td>\
+        </tr>\
+    ')
+    
+    $(".botaoRemoverItemImobilizado:last").on('click', function() {
+        var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+        if (ReotrnoConfirmo == true) {
+            $(this).closest('.trTableTransferenciaImoblizados').remove();
+        }
+        else{
+            false
+        }
+        
+       
+    });
+}
+
+function InsereItensNaTableImob(){
+    var atividade = $("#atividade").val() 
+    var ItensImobilizado = $("#jsonItensImobilizado").val();
+    ItensImobilizado = JSON.parse(ItensImobilizado);
+
+    if (atividade == '5') {
+        for (i = 0; i < ItensImobilizado.length; i++) {
+            $("#bodyTableTransferenciaImoblizados").append('\
+            <tr class="trTableTransferenciaImoblizados">\
+                <td>\
+                    <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
+                </td>\
+                <td>\
+                    <span>' + ItensImobilizado[i].ValorImob + '</span>\
+                </td>\
+            </tr>\
+        ')
+        }
+    }
+    else if (atividade == 4) {
+        for (i = 0; i < ItensImobilizado.length; i++) {
+            $("#bodyTableTransferenciaImoblizados").append('\
+            <tr class="trTableTransferenciaImoblizados">\
+                <td>\
+                    <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
+                </td>\
+                <td>\
+                    <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
+                </td>\
+                <td>\
+                    <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
+                </td>\
+                <td>\
+                    <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
+                </td>\
+            </tr>\
+        ')   
+        }
+    }
 }
