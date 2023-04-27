@@ -88,8 +88,11 @@
                 <option value="Devolução de Compras">
                   Devolução de Compras (Terceiros)
                 </option>
-                <option value="Transferencia de Imobilizado">
-                  Transferência de Imobilizado
+                <option value="Transferencia de Equipamentos">
+                  Transferência de Equipamentos (Terceiros)
+                </option>
+                <option value="Transferencia de Equipamentos de Escritório e Materiais/Peças">
+                  Transferênca de Equipamentos de Escritório e Materiais/Peças
                 </option>
               </select>
               <div></div>
@@ -930,6 +933,194 @@
                 </div>
               </div>
             </div>
+            <div id="divCamposTransferenciaDeEquipamento">
+              <div id="divInfoTransferenciaDeEquipamento">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Transferênca de Equipamentos (Terceiros)</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-input">
+                      <label>Imobilizado:</label>
+                      <strong class="strongAlert">*</strong>
+                      <input
+                        type="text"
+                        name="ImobilizadoEquipamentosTransf"
+                        id="ImobilizadoEquipamentosTransf"
+                        class="form-control InputTransfereciaDeEquipamentos"
+                      />
+                      <div></div>
+                      <br />
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <b>Centro de Custo de Origem:</b>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          type="text"
+                          name="CCustoDeOrigTransEquip"
+                          id="CCustoDeOrigTransEquip"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        >
+                          <option value=""></option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="col-md-6">
+                        <b>Centro de Custo de Destino:</b>
+                        <strong class="strongAlert">*</strong>
+                        <select
+                          type="text"
+                          name="CCustoDeDestinoTransEquip"
+                          id="CCustoDeDestinoTransEquip"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        >
+                          <option value=""></option>
+                        </select>
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div id="divItens">
+                      <div id="divItensTransferenciaImobilizados"></div>
+                      <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <div class="row">
+                            <span
+                              class="col-md-3"
+                              id="Itens"
+                              style="
+                                margin-top: 0.6%;
+                                font-size: medium;
+                                font-weight: bold;
+                              "
+                            >
+                              Itens
+                            </span>
+                          </div>
+                        </div>
+                        <div class="panel-body">
+                          <div class="col-md-12 text-right" id="divBotao">
+                            <button
+                              class="BotaoAddEquipTransf btn btn-success"
+                              id="BotaoAddEquipTransferencia"
+                            >
+                              Adicionar Item
+                            </button>
+                          </div>
+                          <br>
+                          <br>
+                          <table
+                            class="table table-bordered"
+                            id="tableEquipamentosParaTransferencia"
+                          >
+                            <thead>
+                              <tr>
+                                <th>Descrição</th>
+                                <th>Prefixo</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                                <!--<th>Valor Unitário</th>
+                                <th>Valor Total</th>
+                                <th>Quantidade Devolvida</th>
+                                <th>Valor Devolvido</th>-->
+                              </tr>
+                            </thead>
+                            <tbody
+                              id="bodyEquipamentosParaTransferencia"
+                            ></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-input">
+                          <label>Responsável pelo Frete:</label>
+                          <strong class="strongAlert">*</strong>
+                          <select
+                            name="selectFreteEquipamentosTransf"
+                            id="selectFreteEquipamentosTransf"
+                            class="form-control InputTransfereciaDeEquipamentos"
+                          >
+                            <option value=""></option>
+                            <option value="Castilho">Castilho</option>
+                            <option value="Terceiros">Terceiros</option>
+                            <option value="Sem Frete">Sem Frete</option>
+                            <option value="Transporte pelo proprio Remetente">
+                              Transporte pelo próprio Remetente
+                            </option>
+                          </select>
+                          <div></div>
+                          <br />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <b>Quantidade de Caixas/Volume:</b>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          name="QuantEquipamentosTransferencia"
+                          id="QuantEquipamentosTransferencia"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Peso:</b>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          name="PesoEquipamentosTransferencia"
+                          id="PesoEquipamentosTransferencia"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label>Data Saída Equipamento:</label>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          id="data_saidaTransfEquip"
+                          name="data_saidaTransfEquip"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        />
+                        <div></div>
+                        <br />
+                      </div>
+                      <div class="col-md-4">
+                        <b>Endereço de Origem:</b>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          name="EndOrEquipamentosTransf"
+                          id="EndOrEquipamentosTransf"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        />
+                        <div></div>
+                      </div>
+                      <div class="col-md-4">
+                        <b>Endereço do Destino:</b>
+                        <strong class="strongAlert">*</strong>
+                        <input
+                          type="text"
+                          name="EndDesEquipamentosTransf"
+                          id="EndDesEquipamentosTransf"
+                          class="form-control InputTransfereciaDeEquipamentos"
+                        />
+                        <div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="form-input">
               <label>Usuário:</label>
@@ -1141,6 +1332,11 @@
           type="hidden"
           id="jsonItensImobilizado"
           name="jsonItensImobilizado"
+        />
+        <input
+          type="hidden"
+          id="jsonItensTransfEquip"
+          name="jsonItensTransfEquip"
         />
       </div>
 

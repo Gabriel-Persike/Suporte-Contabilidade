@@ -28,7 +28,7 @@ $(document).ready(async () => {
             setDataPrazoRetorno();
         }
     });
-    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado").on("click", function () {
+    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado, .InputTransfereciaDeEquipamentos").on("click", function () {
         $(this).removeClass("has-error");
     });
     $("#email").on("blur", function () {
@@ -100,11 +100,17 @@ $(document).ready(async () => {
         else {
             $("#divCamposDevolucaoDeCompras").slideUp();
         }
-        if ($(this).val() == "Transferencia de Imobilizado") {
+        if ($(this).val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").slideDown();
         }
         else {
             $("#divTransferenciaDeImobilizados").slideUp();
+        }
+        if ($(this).val() == "Transferencia de Equipamentos") {
+            $("#divCamposTransferenciaDeEquipamento").slideDown();
+        }
+        else {
+            $("#divCamposTransferenciaDeEquipamento").slideUp();
         }
     });
     $("#movimentoExclusaoLancamento").on("blur", function () {
@@ -226,6 +232,12 @@ $(document).ready(async () => {
             $(this).mask('###.###.##0,00', {reverse: true});
         });
     })
+    $("#BotaoAddEquipTransferencia").on('click', function () {
+        InsereRowTable();
+        $(".ValorTransfEquip").keypress(function() {
+            $(this).mask('###.###.###.###,00', {reverse: true});
+        });
+    })
     $("#movimentoExclusaoLancamento").mask("9999999");
     $("#selectFreteDevolucaoDeEqp").on("change", function () {
         if ($(this).val() == "Próprio Remetente") {
@@ -333,9 +345,9 @@ $(document).ready(async () => {
 
     $("#categoria").on('change', function () {
         BuscaCentroDeCusto(true).then(options => {
-            var optSelected = $("#CCustoDeDestinoImobilizado").val();
-            $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
-            $("#CCustoDeDestinoImobilizado").val(optSelected);
+            var optSelected = $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val();
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val(optSelected);
         })
     })
 
@@ -378,7 +390,8 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
         FLUIGC.calendar("#data_saida_equipamento");
-        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransferenciaDeImobilizados").hide();
+        FLUIGC.calendar("#data_saidaTransfEquip");
+        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransferenciaDeImobilizados, #divCamposTransferenciaDeEquipamento").hide();
         BuscaListDeUsuariosAD($("#solicitante").val());
         $("#atabHistorico").closest("li").hide();
         BuscaObras($("#userCode").val());
@@ -390,6 +403,7 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataRetiradaDevolucaoDeEqp");
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
+        FLUIGC.calendar("#data_saida_equipamento");
         $(".radioDecisao:checked").attr("checked", false);
         $(".radioDecisaoConclusao:checked").attr("checked", false);
         $("#observacao, #solucao, #divDecisaoConclusao").val("");
@@ -550,14 +564,20 @@ $(document).ready(async () => {
             $("#divCamposDevolucaoDeCompras").hide();
         }
 
-        if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-            InsereItensNaTableImob();
+        if ($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").show();
+            InsereItensNaTableImob();
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
+        }
+
+        if ($("#categoria").val() == "Transferencia de Equipamentos") {
+            $("#divCamposTransferenciaDeEquipamento").show();
+            InsereItensNaTableImob();
+        }
+        else {
+            $("#divCamposTransferenciaDeEquipamento").hide();
         }
 
     }
@@ -708,7 +728,16 @@ $(document).ready(async () => {
         else {
             $("#divCamposDevolucaoDeCompras").hide();
         }
-        if ($("#categoria").text() == "Transferência de Imobilizado") {
+        if ($("#categoria").text() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
+            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
+            InsereItensNaTableImob();
+            $("#divTransferenciaDeImobilizados").show();
+        }
+        else {
+            $("#divTransferenciaDeImobilizados").hide();
+        }
+        if ($("#categoria").text() == "Transferencia de Equipamentos") {
             /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
             $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
             InsereItensNaTableImob();
