@@ -227,7 +227,7 @@ $(document).ready(async () => {
         }
     });
     $("#addItemImobilizado").on('click', function () {
-        InsereRowTableTransfImob();
+        InsereRowTable();
         $(".ValorItemImob").keypress(function() {
             $(this).mask('###.###.##0,00', {reverse: true});
         });
@@ -566,7 +566,10 @@ $(document).ready(async () => {
 
         if ($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").show();
-            InsereItensNaTableImob();
+            InsereItensNaTable();
+            $(".ValorItemImob").keypress(function() {
+                $(this).mask('###.###.###.###,00', {reverse: true});
+            });
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
@@ -574,7 +577,10 @@ $(document).ready(async () => {
 
         if ($("#categoria").val() == "Transferencia de Equipamentos") {
             $("#divCamposTransferenciaDeEquipamento").show();
-            InsereItensNaTableImob();
+            InsereItensNaTable();
+            $(".ValorTransfEquip").keypress(function() {
+                $(this).mask('###.###.###.###,00', {reverse: true});
+            });
         }
         else {
             $("#divCamposTransferenciaDeEquipamento").hide();
@@ -731,7 +737,7 @@ $(document).ready(async () => {
         if ($("#categoria").text() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
             $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-            InsereItensNaTableImob();
+            InsereItensNaTable();
             $("#divTransferenciaDeImobilizados").show();
         }
         else {
@@ -740,7 +746,7 @@ $(document).ready(async () => {
         if ($("#categoria").text() == "Transferencia de Equipamentos") {
             /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
             $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-            InsereItensNaTableImob();
+            InsereItensNaTable();
             $("#divTransferenciaDeImobilizados").show();
         }
         else {
