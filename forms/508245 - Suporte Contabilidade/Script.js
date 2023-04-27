@@ -416,6 +416,7 @@ $(document).ready(async () => {
             $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
             $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val(optSelected);
         })
+        
 
         if (atividade == 4) {
             $("#divDecisao, #divDecisaoConclusao, #divInfoResolucaoChamado").hide();
