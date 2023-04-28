@@ -425,7 +425,7 @@ $(document).ready(async () => {
         }
         else if (atividade == 5) {
             BloqueiaCamposInfoChamado();
-            $("#divInfoResolucaoChamado, #divInfoObservacao, #divDecisaoConclusao").closest("div").hide();
+            $("#divInfoResolucaoChamado, #divInfoObservacao, #divDecisaoConclusao, #divBotao").closest("div").hide();
             dataPrazoRetorno = FLUIGC.calendar("#data_prazo_retorno");
         }
 

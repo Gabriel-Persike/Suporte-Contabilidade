@@ -1461,7 +1461,7 @@ function InsereRowTable(){
     }
 }
 
-function InsereItensNaTableImob(){
+function InsereItensNaTable(){
     var atividade = $("#atividade").val() 
     if ($("#categoria").val() == 'Transferencia de Equipamentos de Escritório e Materiais/Peças') {
         var ItensImobilizado = $("#jsonItensImobilizado").val();
@@ -1490,21 +1490,36 @@ function InsereItensNaTableImob(){
         else if (atividade == 4) {
             for (i = 0; i < ItensImobilizado.length; i++) {
                 $("#bodyTableTransferenciaImoblizados").append('\
-                <tr class="trTableTransferenciaImoblizados">\
-                    <td>\
-                        <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
-                    </td>\
-                    <td>\
-                        <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
-                    </td>\
-                    <td>\
-                        <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
-                    </td>\
-                    <td>\
-                        <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
-                    </td>\
-                </tr>\
-            ')   
+                    <tr class="trTableTransferenciaImoblizados">\
+                        <td>\
+                            <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
+                        </td>\
+                        <td style="text-align: center;">\
+                        <button class="botaoRemoverItemImobilizado btn btn-danger">\
+                            <i class="flaticon flaticon-trash icon-md">\
+                            </i>\
+                        </button>\
+                        </td>\
+                    </tr>\
+                ')
+                $(".botaoRemoverItemImobilizado:last").on('click', function() {
+                    var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+                    if (ReotrnoConfirmo == true) {
+                        $(this).closest('.trTableTransferenciaImoblizados').remove();
+                    }
+                    else{
+                        false
+                    }
+                });   
             }
         }
     }
@@ -1535,22 +1550,37 @@ function InsereItensNaTableImob(){
         else if (atividade == 4) {
             for (i = 0; i < EquipsTransf.length; i++) {
                 $("#bodyEquipamentosParaTransferencia").append('\
-                <tr class="trTableTransferenciaEquip">\
-                    <td>\
-                        <input type="text" class="InputTransfereciaDeEquipamentos DescTransfEquip form-control" value='+ EquipsTransf[i].DescTransfEquip +' />\
-                    </td>\
-                    <td>\
-                        <input type="text" class="PrefixTransfEquip form-control" value=' + EquipsTransf[i].PrefixTransfEquip +' />\
-                    </td>\
-                    <td>\
-                        <input type="number" class="InputTransfereciaDeEquipamentos QuantTransfEquip form-control" value=' + EquipsTransf[i].QuantTransfEquip +' />\
-                    </td>\
-                    <td>\
-                        <input type="text" class="InputTransfereciaDeEquipamentos ValorTransfEquip form-control" value=' + EquipsTransf[i].ValorTransfEquip +' />\
-                    </td>\
-                </tr>\
-            ')   
+                    <tr class="trTableTransferenciaEquip">\
+                        <td>\
+                            <input type="text" class="InputTransfereciaDeEquipamentos DescTransfEquip form-control" value='+ EquipsTransf[i].DescTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="PrefixTransfEquip form-control" value=' + EquipsTransf[i].PrefixTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="number" class="InputTransfereciaDeEquipamentos QuantTransfEquip form-control" value=' + EquipsTransf[i].QuantTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="InputTransfereciaDeEquipamentos ValorTransfEquip form-control" value=' + EquipsTransf[i].ValorTransfEquip +' />\
+                        </td>\
+                        <td style="text-align: center;">\
+                        <button class="botaoRemoverTransfEquip btn btn-danger">\
+                            <i class="flaticon flaticon-trash icon-md">\
+                            </i>\
+                        </button>\
+                        </td>\
+                    </tr>\
+                ')
             }
+            $(".botaoRemoverTransfEquip:last").on('click', function() {
+                var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+                if (ReotrnoConfirmo == true) {
+                    $(this).closest('.trTableTransferenciaEquip').remove();
+                }
+                else{
+                    false
+                }
+            });
         }
     }
 }
