@@ -369,16 +369,26 @@ $(document).ready(async () => {
         $("#CCustoEntradaDeEquipamentos").html("<option></option>" + options);
         $("#CCustoEntradaDeEquipamentos").val(optSelected);
 
-        var optSelected = $("#ObraDevolucaoDeCompra").val();
-        $("#ObraDevolucaoDeCompra").html("<option></option>" + options);
-        $("#ObraDevolucaoDeCompra").val(optSelected);
-
-        var optSelected = $("#CCustoDeOrigemImobilizado").val();
+        /*var optSelected = $("#CCustoDeOrigemImobilizado").val();
         $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
         $("#CCustoDeOrigemImobilizado").val(optSelected);
+
+        var optSelected = $("#CCustoDeOrigTransEquip").val();
+        $("#CCustoDeOrigTransEquip").html("<option></option>" + options);
+        $("#CCustoDeOrigTransEquip").val(optSelected);*/
     });
 
     $("#categoria").on('change', function () {
+        BuscaCentroDeCusto().then(options => {
+            var optSelected = $("#CCustoDeOrigemImobilizado").val();
+            $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
+            $("#CCustoDeOrigemImobilizado").val(optSelected);
+    
+            var optSelected = $("#CCustoDeOrigTransEquip").val();
+            $("#CCustoDeOrigTransEquip").html("<option></option>" + options);
+            $("#CCustoDeOrigTransEquip").val(optSelected);
+        })
+        
         BuscaCentroDeCusto(true).then(options => {
             var optSelected = $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val();
             $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
