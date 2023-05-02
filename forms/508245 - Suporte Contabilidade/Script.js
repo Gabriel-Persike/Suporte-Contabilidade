@@ -226,18 +226,51 @@ $(document).ready(async () => {
             });
         }
     });
+
+    $("#selectFreteImobilizado").on("change", function () {
+        if ($(this).val() == "Terceiros") {
+            $("#divTransportadoraTransfImob").slideDown();
+        }
+        else {
+            $("#divTransportadoraTransfImob").slideUp();
+        }
+
+        if ($(this).val() == "Castilho") {
+            $("#divPlacaTransfImob").slideDown();
+        }
+        else {
+            $("#divPlacaTransfImob").slideUp();
+        }
+    });
     $("#addItemImobilizado").on('click', function () {
         InsereRowTable();
         $(".ValorItemImob").keypress(function() {
-            $(this).mask('###.###.##0,00', {reverse: true});
+            $(this).mask('###.###.###.###,00', {reverse: true});
         });
     })
+
+    $("#selectFreteEquipamentosTransf").on("change", function () {
+        if ($(this).val() == "Castilho") {
+            $("#divPlacaTransfEquip").slideDown();
+        }
+        else {
+            $("#divPlacaTransfEquip").slideUp();
+        }
+
+        if ($(this).val() == "Terceiros") {
+            $("#divTransportadoraTransfEquip").slideDown();
+        }
+        else {
+            $("#divTransportadoraTransfEquip").slideUp();
+        }
+    });
     $("#BotaoAddEquipTransferencia").on('click', function () {
         InsereRowTable();
         $(".ValorTransfEquip").keypress(function() {
             $(this).mask('###.###.###.###,00', {reverse: true});
         });
     })
+    
     $("#movimentoExclusaoLancamento").mask("9999999");
     $("#selectFreteDevolucaoDeEqp").on("change", function () {
         if ($(this).val() == "Próprio Remetente") {
@@ -271,6 +304,8 @@ $(document).ready(async () => {
     });
     $("#inputPlacaDevolucaoDeCompra").mask("AAA-AAAA");
     $("#inputPlacaDevolucaoDeEqp").mask("AAA-AAAA");
+    $("#inputPlacaTransfEquip").mask("AAA-AAAA");
+    $("#inputPlacaTransfImob").mask("AAA-AAAA");
     $("#NContratoEntradaDeEquipamentos").mask("9.9.999-999/99");
     $("#NContratoEntradaDeEquipamentos").on("blur", function () {
         BuscaContrato().then(contrato => {
@@ -391,7 +426,7 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
         FLUIGC.calendar("#data_saida_equipamento");
         FLUIGC.calendar("#data_saidaTransfEquip");
-        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransferenciaDeImobilizados, #divCamposTransferenciaDeEquipamento").hide();
+        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransportadoraTransfImob, #divPlacaTransfImob, #divTransferenciaDeImobilizados, #divCamposTransferenciaDeEquipamento, #divTransportadoraTransfEquip, #divPlacaTransfEquip").hide();
         BuscaListDeUsuariosAD($("#solicitante").val());
         $("#atabHistorico").closest("li").hide();
         BuscaObras($("#userCode").val());
@@ -404,6 +439,7 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
         FLUIGC.calendar("#data_saida_equipamento");
+        FLUIGC.calendar("#data_saidaTransfEquip");
         $(".radioDecisao:checked").attr("checked", false);
         $(".radioDecisaoConclusao:checked").attr("checked", false);
         $("#observacao, #solucao, #divDecisaoConclusao").val("");
@@ -419,6 +455,16 @@ $(document).ready(async () => {
         
 
         if (atividade == 4) {
+            BuscaTransportadora().then(transportadora => {
+                transportadora.values.forEach(transp => {
+                    if (transp.CGC == "   -   ") {
+                        $("#datalistTransport").append("<option value='" + transp.NOME + "'></option>")
+                    }
+                    else {
+                        $("#datalistTransport").append("<option value='" + transp.CGC + " - " + transp.NOME + "'></option>")
+                    }
+                });
+            });
             $("#divDecisao, #divDecisaoConclusao, #divInfoResolucaoChamado").hide();
             BloqueiaCamposInfoChamado();
             $("#data_prazo_retorno").closest(".form-input").hide();
@@ -574,6 +620,17 @@ $(document).ready(async () => {
         if ($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").show();
             InsereItensNaTable();
+            if ($("#selectFreteImobilizado").val() == "Terceiros"){  
+                $("#divTransportadoraTransfImob").show();
+                $("#divPlacaTransfImob").hide();
+            } 
+            else if($("#selectFreteImobilizado").val() == "Castilho") {
+                $("#divPlacaTransfImob").show();
+                $("#divTransportadoraTransfImob").hide();
+            }
+            else{
+                $("#divTransportadoraTransfImob, #divPlacaTransfImob").hide();
+            }
             $(".ValorItemImob").keypress(function() {
                 $(this).mask('###.###.###.###,00', {reverse: true});
             });
@@ -583,11 +640,24 @@ $(document).ready(async () => {
         }
 
         if ($("#categoria").val() == "Transferencia de Equipamentos") {
+
             $("#divCamposTransferenciaDeEquipamento").show();
             InsereItensNaTable();
             $(".ValorTransfEquip").keypress(function() {
                 $(this).mask('###.###.###.###,00', {reverse: true});
             });
+
+            if ($("#selectFreteEquipamentosTransf").val() == "Terceiros"){  
+                $("#divTransportadoraTransfEquip").show();
+                $("#divPlacaTransfEquip").hide();
+            } 
+            else if($("#selectFreteEquipamentosTransf").val() == "Castilho") {
+                $("#divPlacaTransfEquip").show();
+                $("#divTransportadoraTransfEquip").hide();
+            }
+            else{
+                $("#divTransportadoraTransfEquip, #divPlacaTransfEquip").hide();
+            }
         }
         else {
             $("#divCamposTransferenciaDeEquipamento").hide();

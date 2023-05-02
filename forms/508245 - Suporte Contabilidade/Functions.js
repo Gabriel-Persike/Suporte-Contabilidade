@@ -447,19 +447,50 @@ function ValidaCampos() {
             }
         }
         else if($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças"){
-            $(".InputImobilizado, .InputTabelaImobilizado").each(function () {
+            $(".InputImobilizado").each(function () {
                 if ($(this).val() == "" || $(this).val() == null) {
-                    $(this).addClass("has-error");
-
-                    if (valida == true) {
-                        valida = false;
-                        FLUIGC.toast({
-                            message: "Campo não preenchido!",
-                            type: "warning"
-                        });
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $(this).offset().top - (screen.height * 0.15)
-                        }, 700);
+                    if ($(this).attr("id") == "CNPJTransImob") {
+                        if ($("#selectFreteImobilizado").val() == "Terceiros") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else if ($(this).attr("id") == "inputPlacaTransfImob") {
+                        if ($("#selectFreteImobilizado").val() == "Castilho") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else {
+                        $(this).addClass("has-error");
+                        if (valida == true) {
+                            valida = false;
+                            FLUIGC.toast({
+                                message: "Campo não preenchido!",
+                                type: "warning"
+                            });
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $(this).offset().top - (screen.height * 0.15)
+                            }, 700);
+                        }
                     }
                 }
             });
@@ -476,19 +507,50 @@ function ValidaCampos() {
             $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
         }
         else if($("#categoria").val() == "Transferencia de Equipamentos"){
-            $(".InputTransfereciaDeEquipamentos, .InputTabelaImobilizado").each(function () {
+            $(".InputTransfereciaDeEquipamentos").each(function () {
                 if ($(this).val() == "" || $(this).val() == null) {
-                    $(this).addClass("has-error");
-
-                    if (valida == true) {
-                        valida = false;
-                        FLUIGC.toast({
-                            message: "Campo não preenchido!",
-                            type: "warning"
-                        });
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $(this).offset().top - (screen.height * 0.15)
-                        }, 700);
+                    if ($(this).attr("id") == "CNPJTransfEquip") {
+                        if ($("#selectFreteEquipamentosTransf").val() == "Terceiros") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else if ($(this).attr("id") == "inputPlacaTransfEquip") {
+                        if ($("#selectFreteEquipamentosTransf").val() == "Castilho") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else {
+                        $(this).addClass("has-error");
+                        if (valida == true) {
+                            valida = false;
+                            FLUIGC.toast({
+                                message: "Campo não preenchido!",
+                                type: "warning"
+                            });
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $(this).offset().top - (screen.height * 0.15)
+                            }, 700);
+                        }
                     }
                 }
             });
