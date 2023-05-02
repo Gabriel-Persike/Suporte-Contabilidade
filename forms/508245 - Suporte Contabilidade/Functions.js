@@ -139,7 +139,7 @@ function BuscaNomeUsuario(usuario) {
 
 function BloqueiaCamposInfoChamado() {
     if ($("#formMode").val() == "VIEW") {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado, .InputTransfereciaDeEquipamentos").each(function () {
             if ($(this).attr("id") == "coligadaExclusaoLancamento") {
                 $(this).siblings("div:first").html($(this).find("option:selected").text());
             } else {
@@ -165,7 +165,7 @@ function BloqueiaCamposInfoChamado() {
         $(".radioInfoChamado").on("click", () => { return false });
     }
     else {
-        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado").each(function () {
+        $(".inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .inputDevolucaoDeEqp, .InputImobilizado, .InputTransfereciaDeEquipamentos").each(function () {
             if ($(this).attr("id") == "CCustoEntradaDeEquipamentos" || $(this).attr("id") == "DeptoEntradaDeEquipamentos" || $(this).attr("id") == "ObraDevolucaoDeCompra" || $(this).attr("id") == "coligadaExclusaoLancamento" || $(this).attr("id") == "coligadaDevolucaoDeCompra") {
                 $(this).siblings("div:first").text($(this).find("option:selected").text());
             }
@@ -446,20 +446,51 @@ function ValidaCampos() {
                 }
             }
         }
-        else if($("#categoria").val() == "Transferencia de Imobilizado"){
-            $(".InputImobilizado, .InputTabelaImobilizado").each(function () {
+        else if($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças"){
+            $(".InputImobilizado").each(function () {
                 if ($(this).val() == "" || $(this).val() == null) {
-                    $(this).addClass("has-error");
-
-                    if (valida == true) {
-                        valida = false;
-                        FLUIGC.toast({
-                            message: "Campo não preenchido!",
-                            type: "warning"
-                        });
-                        $([document.documentElement, document.body]).animate({
-                            scrollTop: $(this).offset().top - (screen.height * 0.15)
-                        }, 700);
+                    if ($(this).attr("id") == "CNPJTransImob") {
+                        if ($("#selectFreteImobilizado").val() == "Terceiros") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else if ($(this).attr("id") == "inputPlacaTransfImob") {
+                        if ($("#selectFreteImobilizado").val() == "Castilho") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else {
+                        $(this).addClass("has-error");
+                        if (valida == true) {
+                            valida = false;
+                            FLUIGC.toast({
+                                message: "Campo não preenchido!",
+                                type: "warning"
+                            });
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $(this).offset().top - (screen.height * 0.15)
+                            }, 700);
+                        }
                     }
                 }
             });
@@ -474,6 +505,66 @@ function ValidaCampos() {
                 ListImobilizados.push(json);
             });
             $("#jsonItensImobilizado").val(JSON.stringify(ListImobilizados))
+        }
+        else if($("#categoria").val() == "Transferencia de Equipamentos"){
+            $(".InputTransfereciaDeEquipamentos").each(function () {
+                if ($(this).val() == "" || $(this).val() == null) {
+                    if ($(this).attr("id") == "CNPJTransfEquip") {
+                        if ($("#selectFreteEquipamentosTransf").val() == "Terceiros") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else if ($(this).attr("id") == "inputPlacaTransfEquip") {
+                        if ($("#selectFreteEquipamentosTransf").val() == "Castilho") {
+                            $(this).addClass("has-error");
+                            if (valida == true) {
+                                valida = false;
+                                FLUIGC.toast({
+                                    message: "Campo não preenchido!",
+                                    type: "warning"
+                                });
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $(this).offset().top - (screen.height * 0.15)
+                                }, 700);
+                            }
+                        }
+                    }
+                    else {
+                        $(this).addClass("has-error");
+                        if (valida == true) {
+                            valida = false;
+                            FLUIGC.toast({
+                                message: "Campo não preenchido!",
+                                type: "warning"
+                            });
+                            $([document.documentElement, document.body]).animate({
+                                scrollTop: $(this).offset().top - (screen.height * 0.15)
+                            }, 700);
+                        }
+                    }
+                }
+            });
+            var ListEquipamentosParaTransf = [];
+            $(".trTableTransferenciaEquip").each(function () {
+            var json = {
+                DescTransfEquip: $(this).find(".DescTransfEquip").val(),
+                PrefixTransfEquip: $(this).find(".PrefixTransfEquip").val(),
+                QuantTransfEquip: $(this).find(".QuantTransfEquip").val(),
+                ValorTransfEquip: $(this).find(".ValorTransfEquip").val(),
+            };
+                ListEquipamentosParaTransf.push(json);
+            });
+            $("#jsonItensTransfEquip").val(JSON.stringify(ListEquipamentosParaTransf))
         }
     }
     else if (atividade == 5) {
@@ -1069,7 +1160,7 @@ function BuscaCentroDeCusto(permissaoGeral = false) {
                             var options = "";
                             var codcoligada = "";
                             CentrosDeCusto.values.forEach(ccusto => {
-                                if ($("#categoria").val() == 'Transferencia de Imobilizado') {
+                                if ($("#categoria").val() == 'Transferencia de Equipamentos de Escritório e Materiais/Peças' || $("#categoria").val() == 'Transferencia de Equipamentos') {
                                     if (ccusto.CODCOLIGADA == '1') {
                                         if (codcoligada != ccusto.CODCOLIGADA){
                                             codcoligada = ccusto.CODCOLIGADA;
@@ -1360,25 +1451,25 @@ function BuscaContrato() {
     });
 }
 
-function InsereRowTableTransfImob(){
-    var id = Date.now();
-    $("#bodyTableTransferenciaImoblizados").append('\
+function InsereRowTable(){
+    if ($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
+        $("#bodyTableTransferenciaImoblizados").append('\
         <tr class="trTableTransferenciaImoblizados">\
             <td>\
-                <input type="text" class="InputImobilizado DescItemImob form-control" id="DescItemImob" />\
+                <input type="text" class="InputImobilizado DescItemImob form-control" />\
             </td>\
             <td>\
                 <input type="text" class="PrefixItemImob form-control" />\
             </td>\
             <td>\
-                <input type="number" class="InputImobilizado QuantItemImob form-control" id="QuantItemImob" />\
+                <input type="number" class="InputImobilizado QuantItemImob form-control" />\
             </td>\
             <td>\
-                <input type="text" placeholder="R$ ###,##" class="InputImobilizado ValorItemImob form-control"  id="ValorItemImob" />\
+                <input type="text" class="InputImobilizado ValorItemImob form-control" />\
             </td>\
             <td style="text-align: center;">\
-                <button id="botaoRemoverItemImobilizado_' + id + '" class="botaoRemoverItemImobilizado btn btn-danger">\
-                    <i class="flaticon flaticon-trash icon-md" style="/* padding-left: 3%; */">\
+                <button class="botaoRemoverItemImobilizado btn btn-danger">\
+                    <i class="flaticon flaticon-trash icon-md">\
                     </i>\
                 </button>\
             </td>\
@@ -1393,54 +1484,165 @@ function InsereRowTableTransfImob(){
         else{
             false
         }
-        
-       
     });
+    
+    }
+    else if ($("#categoria").val() == "Transferencia de Equipamentos"){
+        $("#bodyEquipamentosParaTransferencia").append('\
+        <tr class="trTableTransferenciaEquip">\
+            <td>\
+                <input type="text" class="InputTransfereciaDeEquipamentos DescTransfEquip form-control" />\
+            </td>\
+            <td>\
+                <input type="text" class="PrefixTransfEquip form-control" />\
+            </td>\
+            <td>\
+                <input type="number" class="InputTransfereciaDeEquipamentos QuantTransfEquip form-control" />\
+            </td>\
+            <td>\
+                <input type="text" class="InputTransfereciaDeEquipamentos ValorTransfEquip form-control" />\
+            </td>\
+            <td style="text-align: center;">\
+                <button class="botaoRemoverTransfEquip btn btn-danger">\
+                    <i class="flaticon flaticon-trash icon-md">\
+                    </i>\
+                </button>\
+            </td>\
+        </tr>\
+    ')
+    
+    $(".botaoRemoverTransfEquip:last").on('click', function() {
+        var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+        if (ReotrnoConfirmo == true) {
+            $(this).closest('.trTableTransferenciaEquip').remove();
+        }
+        else{
+            false
+        }
+    });
+    }
 }
 
-function InsereItensNaTableImob(){
+function InsereItensNaTable(){
     var atividade = $("#atividade").val() 
-    var ItensImobilizado = $("#jsonItensImobilizado").val();
-    ItensImobilizado = JSON.parse(ItensImobilizado);
+    if ($("#categoria").val() == 'Transferencia de Equipamentos de Escritório e Materiais/Peças') {
+        var ItensImobilizado = $("#jsonItensImobilizado").val();
+        ItensImobilizado = JSON.parse(ItensImobilizado);
 
-    if (atividade == '5') {
-        for (i = 0; i < ItensImobilizado.length; i++) {
-            $("#bodyTableTransferenciaImoblizados").append('\
-            <tr class="trTableTransferenciaImoblizados">\
-                <td>\
-                    <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
-                </td>\
-                <td>\
-                    <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
-                </td>\
-                <td>\
-                    <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
-                </td>\
-                <td>\
-                    <span>' + ItensImobilizado[i].ValorImob + '</span>\
-                </td>\
-            </tr>\
-        ')
+        if (atividade == '5') {
+            for (i = 0; i < ItensImobilizado.length; i++) {
+                $("#bodyTableTransferenciaImoblizados").append('\
+                <tr class="trTableTransferenciaImoblizados">\
+                    <td>\
+                        <span>' + ItensImobilizado[i].DescricaoImob + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + ItensImobilizado[i].PrefixoImob + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + ItensImobilizado[i].QuantidadeImob + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + ItensImobilizado[i].ValorImob + '</span>\
+                    </td>\
+                </tr>\
+            ')
+            }
+        }
+        else if (atividade == 4) {
+            for (i = 0; i < ItensImobilizado.length; i++) {
+                $("#bodyTableTransferenciaImoblizados").append('\
+                    <tr class="trTableTransferenciaImoblizados">\
+                        <td>\
+                            <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
+                        </td>\
+                        <td style="text-align: center;">\
+                        <button class="botaoRemoverItemImobilizado btn btn-danger">\
+                            <i class="flaticon flaticon-trash icon-md">\
+                            </i>\
+                        </button>\
+                        </td>\
+                    </tr>\
+                ')
+                $(".botaoRemoverItemImobilizado:last").on('click', function() {
+                    var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+                    if (ReotrnoConfirmo == true) {
+                        $(this).closest('.trTableTransferenciaImoblizados').remove();
+                    }
+                    else{
+                        false
+                    }
+                });   
+            }
         }
     }
-    else if (atividade == 4) {
-        for (i = 0; i < ItensImobilizado.length; i++) {
-            $("#bodyTableTransferenciaImoblizados").append('\
-            <tr class="trTableTransferenciaImoblizados">\
-                <td>\
-                    <input type="text" class="InputImobilizado DescItemImob form-control" value='+ ItensImobilizado[i].DescricaoImob +' />\
-                </td>\
-                <td>\
-                    <input type="text" class="PrefixItemImob form-control" value=' + ItensImobilizado[i].PrefixoImob +' />\
-                </td>\
-                <td>\
-                    <input type="number" class="InputImobilizado QuantItemImob form-control" value=' + ItensImobilizado[i].QuantidadeImob +' />\
-                </td>\
-                <td>\
-                    <input type="text" class="InputImobilizado ValorItemImob form-control" value=' + ItensImobilizado[i].ValorImob +' />\
-                </td>\
-            </tr>\
-        ')   
+    else if($("#categoria").val() == 'Transferencia de Equipamentos'){
+        var EquipsTransf = $("#jsonItensTransfEquip").val();
+        EquipsTransf = JSON.parse(EquipsTransf);
+
+        if (atividade == '5') {
+            for (i = 0; i < EquipsTransf.length; i++) {
+                $("#bodyEquipamentosParaTransferencia").append('\
+                <tr class="trTableTransferenciaEquip">\
+                    <td>\
+                        <span>' + EquipsTransf[i].DescTransfEquip + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + EquipsTransf[i].PrefixTransfEquip + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + EquipsTransf[i].QuantTransfEquip + '</span>\
+                    </td>\
+                    <td>\
+                        <span>' + EquipsTransf[i].ValorTransfEquip + '</span>\
+                    </td>\
+                </tr>\
+            ')
+            }
+        }
+        else if (atividade == 4) {
+            for (i = 0; i < EquipsTransf.length; i++) {
+                $("#bodyEquipamentosParaTransferencia").append('\
+                    <tr class="trTableTransferenciaEquip">\
+                        <td>\
+                            <input type="text" class="InputTransfereciaDeEquipamentos DescTransfEquip form-control" value='+ EquipsTransf[i].DescTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="PrefixTransfEquip form-control" value=' + EquipsTransf[i].PrefixTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="number" class="InputTransfereciaDeEquipamentos QuantTransfEquip form-control" value=' + EquipsTransf[i].QuantTransfEquip +' />\
+                        </td>\
+                        <td>\
+                            <input type="text" class="InputTransfereciaDeEquipamentos ValorTransfEquip form-control" value=' + EquipsTransf[i].ValorTransfEquip +' />\
+                        </td>\
+                        <td style="text-align: center;">\
+                        <button class="botaoRemoverTransfEquip btn btn-danger">\
+                            <i class="flaticon flaticon-trash icon-md">\
+                            </i>\
+                        </button>\
+                        </td>\
+                    </tr>\
+                ')
+            }
+            $(".botaoRemoverTransfEquip:last").on('click', function() {
+                var  ReotrnoConfirmo = confirm("Deseja confirmar a remoção deste Item?");
+                if (ReotrnoConfirmo == true) {
+                    $(this).closest('.trTableTransferenciaEquip').remove();
+                }
+                else{
+                    false
+                }
+            });
         }
     }
 }

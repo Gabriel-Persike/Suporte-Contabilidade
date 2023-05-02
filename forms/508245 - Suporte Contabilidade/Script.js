@@ -28,7 +28,7 @@ $(document).ready(async () => {
             setDataPrazoRetorno();
         }
     });
-    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado").on("click", function () {
+    $(".inputObservacao, #email, .inputResolucaoChamado, .inputInfoChamado, .inputExclusaoLancamento, .inputEntradaDeEquipamentos, .inputDevolucaoDeEquipamentos, .inputDevolucaoDeCompra, .InputImobilizado, .InputTransfereciaDeEquipamentos").on("click", function () {
         $(this).removeClass("has-error");
     });
     $("#email").on("blur", function () {
@@ -100,11 +100,17 @@ $(document).ready(async () => {
         else {
             $("#divCamposDevolucaoDeCompras").slideUp();
         }
-        if ($(this).val() == "Transferencia de Imobilizado") {
+        if ($(this).val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").slideDown();
         }
         else {
             $("#divTransferenciaDeImobilizados").slideUp();
+        }
+        if ($(this).val() == "Transferencia de Equipamentos") {
+            $("#divCamposTransferenciaDeEquipamento").slideDown();
+        }
+        else {
+            $("#divCamposTransferenciaDeEquipamento").slideUp();
         }
     });
     $("#movimentoExclusaoLancamento").on("blur", function () {
@@ -220,12 +226,51 @@ $(document).ready(async () => {
             });
         }
     });
+
+    $("#selectFreteImobilizado").on("change", function () {
+        if ($(this).val() == "Terceiros") {
+            $("#divTransportadoraTransfImob").slideDown();
+        }
+        else {
+            $("#divTransportadoraTransfImob").slideUp();
+        }
+
+        if ($(this).val() == "Castilho") {
+            $("#divPlacaTransfImob").slideDown();
+        }
+        else {
+            $("#divPlacaTransfImob").slideUp();
+        }
+    });
     $("#addItemImobilizado").on('click', function () {
-        InsereRowTableTransfImob();
+        InsereRowTable();
         $(".ValorItemImob").keypress(function() {
-            $(this).mask('###.###.##0,00', {reverse: true});
+            $(this).mask('###.###.###.###,00', {reverse: true});
         });
     })
+
+    $("#selectFreteEquipamentosTransf").on("change", function () {
+        if ($(this).val() == "Castilho") {
+            $("#divPlacaTransfEquip").slideDown();
+        }
+        else {
+            $("#divPlacaTransfEquip").slideUp();
+        }
+
+        if ($(this).val() == "Terceiros") {
+            $("#divTransportadoraTransfEquip").slideDown();
+        }
+        else {
+            $("#divTransportadoraTransfEquip").slideUp();
+        }
+    });
+    $("#BotaoAddEquipTransferencia").on('click', function () {
+        InsereRowTable();
+        $(".ValorTransfEquip").keypress(function() {
+            $(this).mask('###.###.###.###,00', {reverse: true});
+        });
+    })
+    
     $("#movimentoExclusaoLancamento").mask("9999999");
     $("#selectFreteDevolucaoDeEqp").on("change", function () {
         if ($(this).val() == "Próprio Remetente") {
@@ -259,6 +304,8 @@ $(document).ready(async () => {
     });
     $("#inputPlacaDevolucaoDeCompra").mask("AAA-AAAA");
     $("#inputPlacaDevolucaoDeEqp").mask("AAA-AAAA");
+    $("#inputPlacaTransfEquip").mask("AAA-AAAA");
+    $("#inputPlacaTransfImob").mask("AAA-AAAA");
     $("#NContratoEntradaDeEquipamentos").mask("9.9.999-999/99");
     $("#NContratoEntradaDeEquipamentos").on("blur", function () {
         BuscaContrato().then(contrato => {
@@ -322,20 +369,30 @@ $(document).ready(async () => {
         $("#CCustoEntradaDeEquipamentos").html("<option></option>" + options);
         $("#CCustoEntradaDeEquipamentos").val(optSelected);
 
-        var optSelected = $("#ObraDevolucaoDeCompra").val();
-        $("#ObraDevolucaoDeCompra").html("<option></option>" + options);
-        $("#ObraDevolucaoDeCompra").val(optSelected);
-
-        var optSelected = $("#CCustoDeOrigemImobilizado").val();
+        /*var optSelected = $("#CCustoDeOrigemImobilizado").val();
         $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
         $("#CCustoDeOrigemImobilizado").val(optSelected);
+
+        var optSelected = $("#CCustoDeOrigTransEquip").val();
+        $("#CCustoDeOrigTransEquip").html("<option></option>" + options);
+        $("#CCustoDeOrigTransEquip").val(optSelected);*/
     });
 
     $("#categoria").on('change', function () {
+        BuscaCentroDeCusto().then(options => {
+            var optSelected = $("#CCustoDeOrigemImobilizado").val();
+            $("#CCustoDeOrigemImobilizado").html("<option></option>" + options);
+            $("#CCustoDeOrigemImobilizado").val(optSelected);
+    
+            var optSelected = $("#CCustoDeOrigTransEquip").val();
+            $("#CCustoDeOrigTransEquip").html("<option></option>" + options);
+            $("#CCustoDeOrigTransEquip").val(optSelected);
+        })
+        
         BuscaCentroDeCusto(true).then(options => {
-            var optSelected = $("#CCustoDeDestinoImobilizado").val();
-            $("#CCustoDeDestinoImobilizado").html("<option></option>" + options);
-            $("#CCustoDeDestinoImobilizado").val(optSelected);
+            var optSelected = $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val();
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val(optSelected);
         })
     })
 
@@ -378,7 +435,8 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
         FLUIGC.calendar("#data_saida_equipamento");
-        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransferenciaDeImobilizados").hide();
+        FLUIGC.calendar("#data_saidaTransfEquip");
+        $("#divResolucaoChamado, #divCamposExclusaoLancamento, #divCamposEntradaDeEquipamento, #divCamposDevolucaoDeEquipamento, #divCamposDevolucaoDeCompras, #divPlacaTranspDevolucaoDeEqp, #divTransportadoraDevolucaoDeEqp, #divTransportadoraDevolucaoDeCompra, #divPlacaTranspDevolucaoDeCompra, #divTransportadoraTransfImob, #divPlacaTransfImob, #divTransferenciaDeImobilizados, #divCamposTransferenciaDeEquipamento, #divTransportadoraTransfEquip, #divPlacaTransfEquip").hide();
         BuscaListDeUsuariosAD($("#solicitante").val());
         $("#atabHistorico").closest("li").hide();
         BuscaObras($("#userCode").val());
@@ -390,6 +448,8 @@ $(document).ready(async () => {
         FLUIGC.calendar("#dataRetiradaDevolucaoDeEqp");
         FLUIGC.calendar("#dataEntradaDevolucaoDeCompra");
         FLUIGC.calendar("#dataRetiradaDevolucaoDeCompra");
+        FLUIGC.calendar("#data_saida_equipamento");
+        FLUIGC.calendar("#data_saidaTransfEquip");
         $(".radioDecisao:checked").attr("checked", false);
         $(".radioDecisaoConclusao:checked").attr("checked", false);
         $("#observacao, #solucao, #divDecisaoConclusao").val("");
@@ -397,14 +457,31 @@ $(document).ready(async () => {
         BuscaComplementos();
         BuscaObras($("#userCode").val());
 
+        BuscaCentroDeCusto(true).then(options => {
+            var optSelected = $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val();
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").html("<option></option>" + options);
+            $("#CCustoDeDestinoImobilizado, #CCustoDeDestinoTransEquip").val(optSelected);
+        })
+        
+
         if (atividade == 4) {
+            BuscaTransportadora().then(transportadora => {
+                transportadora.values.forEach(transp => {
+                    if (transp.CGC == "   -   ") {
+                        $("#datalistTransport").append("<option value='" + transp.NOME + "'></option>")
+                    }
+                    else {
+                        $("#datalistTransport").append("<option value='" + transp.CGC + " - " + transp.NOME + "'></option>")
+                    }
+                });
+            });
             $("#divDecisao, #divDecisaoConclusao, #divInfoResolucaoChamado").hide();
             BloqueiaCamposInfoChamado();
             $("#data_prazo_retorno").closest(".form-input").hide();
         }
         else if (atividade == 5) {
             BloqueiaCamposInfoChamado();
-            $("#divInfoResolucaoChamado, #divInfoObservacao, #divDecisaoConclusao").closest("div").hide();
+            $("#divInfoResolucaoChamado, #divInfoObservacao, #divDecisaoConclusao, #divBotao").closest("div").hide();
             dataPrazoRetorno = FLUIGC.calendar("#data_prazo_retorno");
         }
 
@@ -550,14 +627,50 @@ $(document).ready(async () => {
             $("#divCamposDevolucaoDeCompras").hide();
         }
 
-        if ($("#categoria").val() == "Transferencia de Imobilizado") {
-            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
-            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-            InsereItensNaTableImob();
+        if ($("#categoria").val() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             $("#divTransferenciaDeImobilizados").show();
+            InsereItensNaTable();
+            if ($("#selectFreteImobilizado").val() == "Terceiros"){  
+                $("#divTransportadoraTransfImob").show();
+                $("#divPlacaTransfImob").hide();
+            } 
+            else if($("#selectFreteImobilizado").val() == "Castilho") {
+                $("#divPlacaTransfImob").show();
+                $("#divTransportadoraTransfImob").hide();
+            }
+            else{
+                $("#divTransportadoraTransfImob, #divPlacaTransfImob").hide();
+            }
+            $(".ValorItemImob").keypress(function() {
+                $(this).mask('###.###.###.###,00', {reverse: true});
+            });
         }
         else {
             $("#divTransferenciaDeImobilizados").hide();
+        }
+
+        if ($("#categoria").val() == "Transferencia de Equipamentos") {
+
+            $("#divCamposTransferenciaDeEquipamento").show();
+            InsereItensNaTable();
+            $(".ValorTransfEquip").keypress(function() {
+                $(this).mask('###.###.###.###,00', {reverse: true});
+            });
+
+            if ($("#selectFreteEquipamentosTransf").val() == "Terceiros"){  
+                $("#divTransportadoraTransfEquip").show();
+                $("#divPlacaTransfEquip").hide();
+            } 
+            else if($("#selectFreteEquipamentosTransf").val() == "Castilho") {
+                $("#divPlacaTransfEquip").show();
+                $("#divTransportadoraTransfEquip").hide();
+            }
+            else{
+                $("#divTransportadoraTransfEquip, #divPlacaTransfEquip").hide();
+            }
+        }
+        else {
+            $("#divCamposTransferenciaDeEquipamento").hide();
         }
 
     }
@@ -708,10 +821,19 @@ $(document).ready(async () => {
         else {
             $("#divCamposDevolucaoDeCompras").hide();
         }
-        if ($("#categoria").text() == "Transferência de Imobilizado") {
+        if ($("#categoria").text() == "Transferencia de Equipamentos de Escritório e Materiais/Peças") {
             /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
             $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
-            InsereItensNaTableImob();
+            InsereItensNaTable();
+            $("#divTransferenciaDeImobilizados").show();
+        }
+        else {
+            $("#divTransferenciaDeImobilizados").hide();
+        }
+        if ($("#categoria").text() == "Transferencia de Equipamentos") {
+            /*$(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('style', "background-color: #fff; color: black;  pointer-events: none; touch-action: none;");
+            $(".InputImobilizado, .DescItemImob, .PrefixItemImob, .QuantItemImob, .ValorItemImob").attr('readonly', true);*/
+            InsereItensNaTable();
             $("#divTransferenciaDeImobilizados").show();
         }
         else {
